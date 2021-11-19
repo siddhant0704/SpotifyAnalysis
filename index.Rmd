@@ -1,6 +1,6 @@
 --- 
-title: "YOUR TITLE HERE"
-author: "YOUR NAMES HERE"
+title: "Spotify Dataset Analysis"
+author: "Siddhant Kumar, Vedant Kumar"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 ---

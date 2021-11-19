@@ -1,0 +1,13 @@
+introduction
+data-sources
+data-transformation
+missing-values
+barplot
+firstly-we-plotted-a-bar-graph-where-x-axis-represents-the-column-name-and-y-axis-represents-the-frequency-of-na-terms.-it-can-be-seen-that-majority-of-the-columns-dont-have-na-enries.-and-the-highest-number-of-na-entry-in-a-column-is-close-to-150.
+cleveland-plot
+secondy-we-try-to-infer-the-relation-of-frequency-of-na-terms-with-columns-by-potting-cleveland-plot.-the-plot-has-x-axis-representing-the-column-name-and-y-axis-representing-the-freqency-of-na-terms.-it-can-be-seen-that-majority-of-the-columns-dont-have-na-enries.-and-the-highest-number-of-na-entry-in-a-column-is-close-to-150.
+finally-we-created-a-heatmap-of-the-subset-of-a-databecause-the-size-of-the-data-is-large-to-cover-every-scenario.-it-can-be-seen-that-column-with-name-dn-has-all-rows-having-na-for-the-selected-25-rows.
+missing-patterns-function-implementation-on-spotify-dataset
+results
+interactive-component
+conclusion

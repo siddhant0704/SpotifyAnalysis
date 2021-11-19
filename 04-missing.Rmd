@@ -8,6 +8,7 @@
 #                       include = FALSE)
 # Librarie
 # install.packages('ggnewscale')
+# install.packages("bookdown")
 library(tidyverse)
 library(patchwork)
 library(repr)
@@ -26,11 +27,10 @@ colnames(newdata) = c("X1","t_d", "t_n","t_r", "t_p", "tl_d", "tl_n", "t_", "p_n
 
 ```
 
-## Number of missing attributes for each wave per question
 
 ## Barplot
 
-Firstly, we plotted a bar graph where x axis represents the column name and y axis represents the freqency of NA terms. It can be seen that majority of the columns don't have NA enries. And the highest number of NA entry in a column is close to 150.
+### Firstly, we plotted a bar graph where x axis represents the column name and y axis represents the frequency of NA terms. It can be seen that majority of the columns don't have NA enries. And the highest number of NA entry in a column is close to 150.
 ```{r}
 
 colsna = colSums(is.na(newdata)) %>%
@@ -56,7 +56,7 @@ ggplot(dfna, aes(x=reorder(cols, -missing_na), y=missing_na)) +
 
 ## Cleveland Plot
 
-# Secondy, we try to infer the relation of frequency of NA terms with columns by potting cleveland plot. The plot has x axis representing the column name and y axis representing the freqency of NA terms. It can be seen that majority of the columns don't have NA enries. And the highest number of NA entry in a column is close to 150.
+### Secondy, we try to infer the relation of frequency of NA terms with columns by potting cleveland plot. The plot has x axis representing the column name and y axis representing the freqency of NA terms. It can be seen that majority of the columns don't have NA enries. And the highest number of NA entry in a column is close to 150.
 
 ```{r}
 
@@ -66,7 +66,7 @@ ggplot(dfna, aes(x=reorder(cols, +missing_na), y=missing_na)) +
 ```
 ## Heatmap
 
-# Finally, we created a heatmap of the subset of a data(because the size of the data is large to cover every scenario). It can be seen that column with name 'dn' has all rows having NA for the selected 25 rows. 
+### Finally, we created a heatmap of the subset of a data(because the size of the data is large to cover every scenario). It can be seen that column with name 'dn' has all rows having NA for the selected 25 rows. 
 
 ```{r, warning = FALSE}
 
@@ -84,9 +84,9 @@ ggplot(dt_n, aes(x = key, y = fct_rev(id), fill = missing)) +
   theme_bw()
 
 ```
-# function implementation to plot missing patterns
+## Missing patterns function
 
-# 
+### Missing patterns function implementation on Spotify Dataset
 ```{r}
 missing_plots_fnc <- function(data, percent = TRUE) {
   
