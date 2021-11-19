@@ -1,1 +1,172 @@
 # Missing values
+
+```{r libraries}
+# , warning = FALSE, message = FALSE, echo = TRUE, include = FALSE
+# knitr::opts_chunk$set(warning = FALSE,
+#                       message = FALSE,
+#                       echo = TRUE,
+#                       include = FALSE)
+# Librarie
+# install.packages('ggnewscale')
+library(tidyverse)
+library(patchwork)
+library(repr)
+library(ggnewscale)
+library(dplyr)
+library(RColorBrewer)
+library(Lock5withR)
+library(readr)
+```
+
+```{r read_data}
+
+Spotify_final_data = read_csv("~/Desktop/EDAVProject/SpotifyAnalysis/dataset/Spotify_final_data.csv")
+newdata = Spotify_final_data
+colnames(newdata) = c("X1","t_d", "t_n","t_r", "t_p", "tl_d", "tl_n", "t_", "p_n", "p_d", "p_g", "pt_s", "dn", "en", "ky", "ld", "md", "sp", "ac", "in1", "lv", "vl", "tm","d1")
+
+```
+
+## Number of missing attributes for each wave per question
+
+## Barplot
+
+Firstly, we plotted a bar graph where x axis represents the column name and y axis represents the freqency of NA terms. It can be seen that majority of the columns don't have NA enries. And the highest number of NA entry in a column is close to 150.
+```{r}
+
+colsna = colSums(is.na(newdata)) %>%
+  sort(decreasing = TRUE)
+
+cols = colnames(newdata)
+missing_na = c()
+
+for (i in colsna){
+  
+  missing_na = append(missing_na, i)
+  
+}
+
+dfna = data.frame(cols, missing_na)
+
+dftf = dfna %>% mutate(missing = ifelse(missing_na == 0, NA, missing_na))
+
+ggplot(dfna, aes(x=reorder(cols, -missing_na), y=missing_na)) + 
+  geom_bar(stat = "identity", fill = 'lightblue') + xlab('Column names') + ylab('NA Frequency')
+
+```
+
+## Cleveland Plot
+
+# Secondy, we try to infer the relation of frequency of NA terms with columns by potting cleveland plot. The plot has x axis representing the column name and y axis representing the freqency of NA terms. It can be seen that majority of the columns don't have NA enries. And the highest number of NA entry in a column is close to 150.
+
+```{r}
+
+ggplot(dfna, aes(x=reorder(cols, +missing_na), y=missing_na)) + 
+  geom_point(color = "blue") + coord_flip()
+
+```
+## Heatmap
+
+# Finally, we created a heatmap of the subset of a data(because the size of the data is large to cover every scenario). It can be seen that column with name 'dn' has all rows having NA for the selected 25 rows. 
+
+```{r, warning = FALSE}
+
+data_subset = newdata[1:50 , 1:23]
+
+dt_n <- data_subset %>%
+  rownames_to_column("id") %>%
+  gather(key, value, -id) %>%
+  mutate(missing = ifelse(is.na(value), "yes", "no"))
+
+ggplot(dt_n, aes(x = key, y = fct_rev(id), fill = missing)) +
+  geom_tile(color = "white") +
+  ggtitle("mtcars with NAs added") +
+  scale_fill_viridis_d() + # discrete scale
+  theme_bw()
+
+```
+# function implementation to plot missing patterns
+
+# 
+```{r}
+missing_plots_fnc <- function(data, percent = TRUE) {
+  
+  colsna = colSums(is.na(data)) %>%
+  sort(decreasing = TRUE)
+  
+  col_na = as.data.frame(t(colsna))
+  
+  df = data.frame(colsna)
+  df = rownames_to_column(df, 'x')
+  
+  per = df %>% mutate(percent = (colsna/sum(colsna))*100)
+  
+  if (percent == TRUE)
+  {
+    p1 = ggplot(per, aes(x = reorder(x, -percent), y = percent)) + geom_bar(stat = 'identity', fill = "#EF7C24") + xlab("") + ylab(" percent\nRows\nMissing ") + ggtitle("Missing Value Patterns")
+    
+  }
+  else
+  {
+    p1 = ggplot(per, aes(x = reorder(x, -colsna), y = colsna)) + geom_bar(stat = 'identity', fill = "#EF7C24") + xlab("") + ylab(" num\nRows\nMissing ") + ggtitle("Missing Value Patterns")
+  }
+  
+  missing_patterns <- data.frame(is.na(data)) %>%
+    group_by_all() %>%
+    count(name = "count", sort = TRUE) %>%
+    ungroup()
+  
+  missing_patterns$index = as.factor(1:nrow(missing_patterns))
+
+  missing_row = missing_patterns[, -c(ncol(missing_patterns)-1,ncol(missing_patterns))]
+  #missing_row <- missing_row[names(col_na)]
+  
+  missing_patterns$missing = apply(missing_row, 1, any)
+  
+  mp = missing_patterns$count
+  
+  indexes = 1:nrow(missing_patterns)
+  df_1 = data.frame(col1 = mp, col2 = as.character(indexes))
+  
+  p2 = ggplot(missing_patterns, aes(x = fct_rev(factor(index)), y = count, fill = missing)) + geom_bar(stat = 'identity')  +
+  scale_fill_brewer(palette = "Oranges", direction = -1) +
+  theme(legend.position = "none") +
+  xlab("") +
+  ylab("Row Count") +
+  coord_flip()  
+  
+  indexes = 1:nrow(missing_patterns)
+  missing_patterns$index = as.character(indexes)
+  
+  
+  newdf = missing_patterns %>% pivot_longer(df$x,names_to = "keys",values_to = "vals")
+  newdf$keys = factor(newdf$keys, levels = df$x)
+  
+  val = max(as.numeric(newdf$index))
+  columns_ = unique(newdf$keys)
+  name = columns_[as.integer(length(columns_)/2) + 1]
+  
+  no_missing = as.numeric(filter(newdf %>% group_by(index) %>% summarize(vals=max(vals)), vals==0)['index'])
+
+  p3 = ggplot(newdf, aes(keys, y = fct_rev(index), fill= vals)) +
+    geom_tile(color = 'white') + scale_fill_manual(values=c('azure2', 'purple')) +
+    theme(legend.position = 'none')+
+  geom_tile(newdf, mapping = aes(factor(keys), val - no_missing + 1), fill="lightblue") +
+  annotate("text", x = name, y = val - no_missing + 1, label = "Complete Cases")
+    
+  missing = p1 +
+    plot_spacer() +
+    p3 +
+    p2 +
+    plot_layout(heights = c(1, 2), widths = c(4, 1))
+  
+  missing
+
+}
+```
+
+```{r}
+
+missing_plots_fnc(newdata, TRUE)
+missing_plots_fnc(newdata, FALSE)
+
+```
