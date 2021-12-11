@@ -1,6 +1,209 @@
 # Results
 
+```{r }
+library(tidyverse)
+library(openintro)
+library(agridat)
+library(boot)
+library(ggridges)
+library(dplyr)
+library(GGally)
+library(plotly)
+library(patchwork)
+```
 
-### put your changes
 
-## del me
+```{r }
+```
+
+```{r}
+data = read.csv('/Users/vedant/Desktop/EDAVProject/SpotifyAnalysis/dataset/Spotify_final_data.csv')
+data = subset(data, select = -c(X))
+```
+#How does the danceability feature relate to songs produced in different eras? Do ppl
+#dance to music produced in the current era or the preceding era?
+```{r}
+colsna = colSums(is.na(data)) %>%
+  sort(decreasing = TRUE)
+
+cols = colnames(data)
+#Remove NA entries
+data = data %>% filter(!is.na(playlist_name) & !is.na(track_album_name) & !is.na(track_album_id) & !is.na(track_album_release_date) & !is.na(tempo) & !is.na(danceability) & !is.na(energy) & !is.na(track_name) & !is.na(track_artist))
+#Add a year column in the dataset
+data$year = as.numeric(substring(data$track_album_release_date,1,4))
+#removing unnecessary colums from the data 
+data = data%>%dplyr::select(-track_id,-track_album_id,-playlist_id)
+# averaging the danceability values for all the year 
+dance = data %>% group_by(year) %>% 
+  summarise(avg_danceability = mean(danceability)) 
+#Danceability trend over years
+
+```
+
+```{r}
+a = ggplot(dance, aes(x = year, y = avg_danceability)) + 
+  geom_line(color = "#00AFBB", size = 1) + ylab('Average Danceability') + xlab('Year') +
+  scale_x_continuous(breaks=seq(1950, 2020, 5)) 
+ggplotly(a)
+```
+
+```{r}
+genre_dance = data %>% group_by(playlist_genre) %>% select(danceability)
+genre_dance_line = genre_dance %>% 
+  group_by(playlist_genre) %>%
+    summarize(avg = mean(danceability))
+
+
+ggplot(genre_dance)+ geom_boxplot(aes(x = playlist_genre, y = danceability)) + 
+  geom_line(data = genre_dance_line, aes(x = playlist_genre, y = avg, group = 1))
+```
+
+```{r}
+popartist = data %>%
+  group_by(track_artist) %>%
+  mutate(n = n()) %>%
+  mutate(Freq = n/sum(n)) %>% filter(n > 95) %>% 
+  select(track_artist, playlist_genre) 
+popartist$num = 1
+
+ggplot(popartist, aes(x =  track_artist, y = num, fill = playlist_genre)) + 
+  geom_bar(stat = "identity") + 
+  scale_fill_brewer()  
+```
+
+```{r}
+dur = data %>% select(playlist_genre, year, duration_ms)
+
+dur_pop = dur %>% filter(playlist_genre == 'pop') %>%  group_by(year) %>% summarise(avg = mean(duration_ms))
+dur_rap = dur %>% filter(playlist_genre == 'rap') %>%  group_by(year) %>% summarise(avg = mean(duration_ms))
+dur_rock = dur %>% filter(playlist_genre == 'rock') %>%  group_by(year) %>% summarise(avg = mean(duration_ms))
+dur_latin = dur %>% filter(playlist_genre == 'latin') %>%  group_by(year) %>% summarise(avg = mean(duration_ms))
+dur_rb = dur %>% filter(playlist_genre == 'r&b') %>%  group_by(year) %>% summarise(avg = mean(duration_ms))
+dur_edm = dur %>% filter(playlist_genre == 'edm') %>%  group_by(year) %>% summarise(avg = mean(duration_ms))
+
+p1 = ggplot(dur_pop, aes(x = year, y = avg)) + 
+  geom_line(color = "#00AFBB", size = 1) + ylab('Avg Duration pop') + xlab('Year')
+
+p2 = ggplot(dur_edm, aes(x = year, y = avg)) + 
+  geom_line(color = "#00AFBB", size = 1) + ylab('Avg Duration edm') + xlab('Year')
+p3 = ggplot(dur_rap, aes(x = year, y = avg)) + 
+  geom_line(color = "#00AFBB", size = 1) + ylab('Avg Duration rap') + xlab('Year')
+p4 = ggplot(dur_rock, aes(x = year, y = avg)) + 
+  geom_line(color = "#00AFBB", size = 1) + ylab('Avg Duration rock') + xlab('Year')
+p5 = ggplot(dur_latin, aes(x = year, y = avg)) + 
+  geom_line(color = "#00AFBB", size = 1) + ylab('Avg Duration latin') + xlab('Year')
+p6 = ggplot(dur_rb, aes(x = year, y = avg)) + 
+  geom_line(color = "#00AFBB", size = 1) + ylab('Avg Duration r&b') + xlab('Year')
+
+p1 + p2 + p3 + p4 + p5 + p6
+
+```
+
+```{r}
+words = data %>% select(playlist_genre, instrumentalness, speechiness)
+
+ggplot(words, aes(x = instrumentalness, y = speechiness)) + geom_point() + 
+  geom_smooth(method = lm) + facet_wrap(~playlist_genre) 
+```
+
+#20th and 21st century/genre/modality
+```{r}
+ms = data %>% select(playlist_genre, year, mode)
+ms$year = ifelse(ms$year >= 2000, '20th Century','19th Century')
+
+vcd::mosaic(mode ~ playlist_genre + year,highlighting_fill = c("grey90", "cornflowerblue"),
+            direction = c("h", "v", "v"), ms)
+```
+# Not as per desired result
+# msub = data %>% select(playlist_genre, playlist_subgenre, year)
+# msub = msub %>% group_by(playlist_subgenre) %>% mutate(num = n()) %>% filter(num < 1100)
+# msub$year = ifelse(msub$year >= 2000, '20th','19th')
+# vcd::mosaic(year ~ playlist_genre + playlist_subgenre,highlighting_fill = c("grey90", "cornflowerblue"),
+#             direction = c("v", "vh", "h"), msub)
+```{r}
+rating_plot <- ggplot(data, aes(x = playlist_genre, y = track_popularity)) +
+  geom_boxplot() +
+  coord_flip() +
+  labs(title = "Popularity across genres", x = "Genres", y = "Popularity")
+
+ggplotly(rating_plot)
+```
+
+```{r}
+
+d1 = data %>% select(energy, liveness, playlist_genre)
+
+p = ggplot(d1, aes(liveness, energy)) + 
+  geom_density_2d() + facet_wrap(~playlist_genre)
+ggplotly(p)
+
+```
+
+```{r}
+a = data %>% select(track_name,acousticness,speechiness,energy,danceability,loudness)%>% group_by(track_name) %>% 
+  summarise(count = n(), acousticness = mean(acousticness),speechiness = mean(speechiness), energy = mean(energy),danceability = mean(danceability)) %>% arrange(desc(count)) 
+
+a = head(a, 5) %>% select(!count)
+a = a %>% pivot_longer(!track_name, names_to = "Variables", values_to = "Values")
+
+ggplot(data=a, aes(x=Variables, y=Values))+geom_bar(aes(y=Values, fill=track_name),stat="identity", alpha=0.8 , position="dodge")+ ylab("Value")+ xlab("Variables of a song")+ggtitle("Top 5 songs in Spotify 2018 ")
+```
+
+
+
+```{r}
+ms = data %>% select(playlist_genre, year, mode, duration_ms)
+ms = ms %>% group_by(playlist_genre) %>% mutate(avg_dur = mean(duration_ms))
+ms$year = ifelse(ms$year >= 2000, '20th','19th')
+ms$avg_dur = ifelse(ms$avg_dur >= 220000, '220k+','220k-')
+ms = ms %>% select(playlist_genre,year,avg_dur)
+vcd::mosaic(year ~ playlist_genre,
+            highlighting_fill = c("grey90", "cornflowerblue"), ms,
+            direction = c("v", "h"))
+
+
+#d = data %>% group_by(year) %>% select(year)
+#d$year = ifelse(d$year >= 2000, 19,20)
+#d = head(d,1000) %>% select(year)
+#d = d %>% group_by(year) %>% select(year)
+#d = head(d,20000) %>% select(year)
+#table(d)
+
+ms = data %>% select(playlist_genre, year, mode, duration_ms)
+ms = ms %>% group_by(playlist_genre) %>% mutate(avg_dur = mean(duration_ms))
+ms$year = ifelse(ms$year >= 2000, '20th','19th')
+ms19 = ms %>% filter(year == '19th' && avg_dur > 220000)
+ms20 = ms %>% filter(year == '20th' && avg_dur < 220000)
+ms19 = head(ms19, 1000)
+ms20 = head(ms20,600)
+msf = rbind(ms19,ms20)
+msf$avg_dur = ifelse(msf$avg_dur >= 220000, '220k+','220k-')
+vcd::mosaic(avg_dur ~ year + playlist_genre, direction = c("v", "h", "v"),
+            highlighting_fill = c("grey90", "cornflowerblue", 'yellow'), msf)
+```
+
+
+
+
+```{r}
+
+library(RColorBrewer)
+fills6 <- rev(brewer.pal(6,'Blues'))
+
+popartist = data %>%
+  group_by(track_artist) %>%
+  mutate(n = n()) %>%
+  mutate(Freq = n/sum(n)) %>% filter(n > 110) %>% 
+  select(track_artist, playlist_genre,duration_ms) 
+
+popartist$duration_ms = ifelse(popartist$duration_ms >= 220000, '200k+','220k-')
+
+vcd::mosaic(playlist_genre ~ track_artist + duration_ms, direction = c("v", "v", "h"),
+           highlighting_fill = rev(fills6), popartist)
+
+
+```
+
+
+
+```
