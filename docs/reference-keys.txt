@@ -11,3 +11,5 @@ missing-patterns-function-implementation-on-spotify-dataset
 results
 interactive-component
 conclusion
+heatmap
+missing-patterns-function

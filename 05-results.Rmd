@@ -13,13 +13,11 @@ library(patchwork)
 ```
 
 
-```{r }
-```
-
 ```{r}
-data = read.csv('/Users/vedant/Desktop/EDAVProject/SpotifyAnalysis/dataset/Spotify_final_data.csv')
+data = read.csv('/Users/vedant/SpotifyAnalysis/dataset/Spotify_final_data.csv')
 data = subset(data, select = -c(X))
 ```
+
 #How does the danceability feature relate to songs produced in different eras? Do ppl
 #dance to music produced in the current era or the preceding era?
 ```{r}
@@ -33,6 +31,9 @@ data = data %>% filter(!is.na(playlist_name) & !is.na(track_album_name) & !is.na
 data$year = as.numeric(substring(data$track_album_release_date,1,4))
 #removing unnecessary colums from the data 
 data = data%>%dplyr::select(-track_id,-track_album_id,-playlist_id)
+
+write.csv(data,"year_data.csv", row.names = FALSE)
+
 # averaging the danceability values for all the year 
 dance = data %>% group_by(year) %>% 
   summarise(avg_danceability = mean(danceability)) 
@@ -41,11 +42,25 @@ dance = data %>% group_by(year) %>%
 ```
 
 ```{r}
+maxx = c(max(dance$avg_danceability))
+minn = c(min(dance$avg_danceability))
+
+d = rbind(maxx,minn)
 a = ggplot(dance, aes(x = year, y = avg_danceability)) + 
   geom_line(color = "#00AFBB", size = 1) + ylab('Average Danceability') + xlab('Year') +
   scale_x_continuous(breaks=seq(1950, 2020, 5)) 
 ggplotly(a)
+
 ```
+The Spotify dataset includes data from various years - 1955 to 2020. With the changing time, it is expected that the taste of music of the generation will change too. In the mission to determine the trend of music over the years and to understand if it's evolution has led in the production of 'more' danceable songs or less danceable songs, a following line graph has been plotted. The graph depicts the unusual rise and fall of danceable songs produced in each year. Geneally, the trend has been increasing and it is safe to conclude that with the passing year, the songs produced have a higher danceability factor. 
+
+To compare the danceability of the two eras - 19th and 20th, it can be said that the 20th century produced songs constantly in the danceability range between 0.5 and 0.6. Whereas, in the 19th century, the distribution has been relatively uneven. The maximum is seen to rise beyond 0.8 and the minimum is below 0.4. Maybe the music producers have learned from this trend and are producing musics within a sweet spot range of 0.5 - 0.6.
+
+Higest average danceability achieved - 0.816 in the year 1962
+
+Lowest average danceability achieved - 0.317 in the year 1960
+
+
 
 ```{r}
 genre_dance = data %>% group_by(playlist_genre) %>% select(danceability)
@@ -53,12 +68,15 @@ genre_dance_line = genre_dance %>%
   group_by(playlist_genre) %>%
     summarize(avg = mean(danceability))
 
-
-ggplot(genre_dance)+ geom_boxplot(aes(x = playlist_genre, y = danceability)) + 
-  geom_line(data = genre_dance_line, aes(x = playlist_genre, y = avg, group = 1))
+a = ggplot(genre_dance)+ geom_boxplot(aes(x = playlist_genre, y = danceability), fill = "cadetblue3") +
+  geom_line(data = genre_dance_line, aes(x = playlist_genre, y = avg, group = 1), color = 'darkred') +
+  theme_gray()
+ggplotly(a)
 ```
 
 ```{r}
+
+
 popartist = data %>%
   group_by(track_artist) %>%
   mutate(n = n()) %>%
@@ -67,77 +85,113 @@ popartist = data %>%
 popartist$num = 1
 
 ggplot(popartist, aes(x =  track_artist, y = num, fill = playlist_genre)) + 
-  geom_bar(stat = "identity") + 
-  scale_fill_brewer()  
+  geom_bar(stat = "identity") + xlab("Track artist") + ylab("Count") +
+  scale_fill_brewer(palette = "Blues") + theme_classic()
+
 ```
+To analyse the genres produced by the top 5 artists we have plotted a stacked bar chart to visualise the results. The plot can help us identify key factors like the genre preferences of an artist, the type of songs they have been producing, etc. It can also benefit the artist by understanding the competition in the music industry. They might want to study the genres produced by various artists and produce a one that is less common.
+
+From the plot, we can see that the high producers of the edm genre are David Guetta, Martin Garrix, and The Chainsmokers. One can say that Don Oman produces most songs of Latin genre as compared to other genres. He is also the leading producer of this type of genre when compared with other top artists. Similarly, Queen produces rock type of music the most as compared to any other genres. They are specialised in the rock genre. Drake on the other hand has produced music of all genres in a somewhat similar proportion (higher preferences to rap and r&b). There seems to be direct competition between  David Guetta and The Chainsmokers as they produce a competitive number of songs belonging to the genres edm and pop.
+
+Leaders in each genres - 
+
+Edm - Martin Garrix
+Latin - Don Omar
+Pop - The Chainsmokers/David Guetta
+r&b - Drake
+Rap - Drake
+Rock - Queen
+ 
 
 ```{r}
+
 dur = data %>% select(playlist_genre, year, duration_ms)
 
-dur_pop = dur %>% filter(playlist_genre == 'pop') %>%  group_by(year) %>% summarise(avg = mean(duration_ms))
-dur_rap = dur %>% filter(playlist_genre == 'rap') %>%  group_by(year) %>% summarise(avg = mean(duration_ms))
-dur_rock = dur %>% filter(playlist_genre == 'rock') %>%  group_by(year) %>% summarise(avg = mean(duration_ms))
-dur_latin = dur %>% filter(playlist_genre == 'latin') %>%  group_by(year) %>% summarise(avg = mean(duration_ms))
-dur_rb = dur %>% filter(playlist_genre == 'r&b') %>%  group_by(year) %>% summarise(avg = mean(duration_ms))
-dur_edm = dur %>% filter(playlist_genre == 'edm') %>%  group_by(year) %>% summarise(avg = mean(duration_ms))
+dur_pop = dur %>% filter(playlist_genre == 'pop') %>%  group_by(year, playlist_genre) %>% summarise(avg = mean(duration_ms))
+dur_rap = dur %>% filter(playlist_genre == 'rap') %>%  group_by(year, playlist_genre) %>% summarise(avg = mean(duration_ms))
+dur_rock = dur %>% filter(playlist_genre == 'rock') %>%  group_by(year, playlist_genre) %>% summarise(avg = mean(duration_ms))
+dur_latin = dur %>% filter(playlist_genre == 'latin') %>%  group_by(year, playlist_genre) %>% summarise(avg = mean(duration_ms))
+dur_rb = dur %>% filter(playlist_genre == 'r&b') %>%  group_by(year, playlist_genre) %>% summarise(avg = mean(duration_ms))
+dur_edm = dur %>% filter(playlist_genre == 'edm') %>%  group_by(year, playlist_genre) %>% summarise(avg = mean(duration_ms))
 
-p1 = ggplot(dur_pop, aes(x = year, y = avg)) + 
-  geom_line(color = "#00AFBB", size = 1) + ylab('Avg Duration pop') + xlab('Year')
+a = rbind(dur_rb, dur_edm, dur_latin, dur_pop, dur_rock, dur_rap)
 
-p2 = ggplot(dur_edm, aes(x = year, y = avg)) + 
-  geom_line(color = "#00AFBB", size = 1) + ylab('Avg Duration edm') + xlab('Year')
-p3 = ggplot(dur_rap, aes(x = year, y = avg)) + 
-  geom_line(color = "#00AFBB", size = 1) + ylab('Avg Duration rap') + xlab('Year')
-p4 = ggplot(dur_rock, aes(x = year, y = avg)) + 
-  geom_line(color = "#00AFBB", size = 1) + ylab('Avg Duration rock') + xlab('Year')
-p5 = ggplot(dur_latin, aes(x = year, y = avg)) + 
-  geom_line(color = "#00AFBB", size = 1) + ylab('Avg Duration latin') + xlab('Year')
-p6 = ggplot(dur_rb, aes(x = year, y = avg)) + 
-  geom_line(color = "#00AFBB", size = 1) + ylab('Avg Duration r&b') + xlab('Year')
-
-p1 + p2 + p3 + p4 + p5 + p6
+b = ggplot(a, aes(x = year, y = avg, colour = factor(playlist_genre))) + 
+  geom_line(size = 1) + ylab('Avg Duration (ms)') + xlab('Year')+ theme_light() + facet_wrap(~playlist_genre)
+ggplotly(b)
 
 ```
+To understand the trend of various genres over time it is imperative we capture their average duration of being played in a given year. 
+
+Important information to artists/producers - 
+
+The trend can convey important information to the artists and the producers of the song. It can tell if an artist should be working hard to produce a song of a particular genre or not. For example, as seen in the trend of the edm genre, it’s average duration of listening is tanking. It can be an indication that the audience prefers other genres over pop. An artist might therefore double question on the choice of a genre before finalizing one.
+
+Inferences - 
+
+Several inferences can be drawn from the plot above - 
+
+Latin - The trend followed by Latin is of a hill like, clinching one time high value of average duration of over 350000 in 1980s. The following years have been similar to that of the pop genre (with more drops). On a broader view, the trend has been on a fall  with few sharp ups and downs but maintaining the range between 200000 ms and 250000 ms. Again, it is one of the safe genres to produce. Despite a falling trend in recent years, it has been consistently over the 200000 ms mark.
+
+
+r&b - The trend for r&b has been on a rise until 2010. Post 2010 captures a sudden drop in the average duration level and it continues to fall as the year progresses. However, between 1970 and 2010, the trend has been consistent and impressive, portraying an average duration of genre as high as 270000 ms. The consistent trend makes it the go to genre for producing songs for any artists/producers.
+
+ 
+Rock - The average duration for rock has been consistent throughout the years (after 1970). The genre has successfully maintained its average duration range between 220000 to 270000. The highest was achieved at over 300000 in the year 1970. Rock is a great genre choice for artists as it yields considerable interests in the listeners as is reflected in the plot. 
+
+
+Rap - Similar to the trend of pop, the rap genre was quite popular until 2010 and it’s average duration has been on a decline ever since. The rap genre managed to exceed the average duration of 400000 ms, second after the edm genre. The trend however, doesn’t bode well for the rap genre as it continues to sink to it’s all time low duration of under 200000 ms. To conclude, a versatile artist might be a little sceptical about producing the rap genre and would prefer other genres belonging to his repertoire.
+
+
+edm - The trend of average duration played per year is not consistent with irregular rise and drop at different intervals. It can be interpreted that the demand of edm was the  most between the year 1995 and 2010.This can be deemed as a successful era for the edm artists as the average duration in ms has crossed 300000 multiple times and achieved a high of over 450000 ms. Although the graph indicates a dip in the later half of the 2010, the duration of edm still surpasses other genres. To conclude, from the trend it can be attested that the emd genre is the safest to produce and the artists can benefit from it.
+
+
+Pop - The trend of average duration played per year can be split in two trends - 19th century and 20th century. It can be seen that the overall demand for pop was greater in the 19th century with maximum average duration crossing 300000 ms and lowering at 150000 ms. The demand for the 20th century has been pretty consistent with the curve dipping after 2014 indicating lower demand. The maximum average duration during this century touches 250000 ms and tanks the least at 200000 ms. To conclude, the artists can safely produce more songs of the pop genre considering it’s trend post year 2000 is pretty consistent.
+
+
 
 ```{r}
 words = data %>% select(playlist_genre, instrumentalness, speechiness)
 
 ggplot(words, aes(x = instrumentalness, y = speechiness)) + geom_point() + 
-  geom_smooth(method = lm) + facet_wrap(~playlist_genre) 
+  geom_smooth(method = lm) + facet_wrap(~playlist_genre) + theme_light()
 ```
+Before interpreting the above plot, it is important to understand the meaning of the two words - speechiness and instrumentalness.
 
-#20th and 21st century/genre/modality
-```{r}
-ms = data %>% select(playlist_genre, year, mode)
-ms$year = ifelse(ms$year >= 2000, '20th Century','19th Century')
+As described by tidytuesday - 
 
-vcd::mosaic(mode ~ playlist_genre + year,highlighting_fill = c("grey90", "cornflowerblue"),
-            direction = c("h", "v", "v"), ms)
-```
-# Not as per desired result
-# msub = data %>% select(playlist_genre, playlist_subgenre, year)
-# msub = msub %>% group_by(playlist_subgenre) %>% mutate(num = n()) %>% filter(num < 1100)
-# msub$year = ifelse(msub$year >= 2000, '20th','19th')
-# vcd::mosaic(year ~ playlist_genre + playlist_subgenre,highlighting_fill = c("grey90", "cornflowerblue"),
-#             direction = c("v", "vh", "h"), msub)
-```{r}
-rating_plot <- ggplot(data, aes(x = playlist_genre, y = track_popularity)) +
-  geom_boxplot() +
-  coord_flip() +
-  labs(title = "Popularity across genres", x = "Genres", y = "Popularity")
+Instrumentalness conveys whether a track contains no vocals. “Ooh” and “aah” sounds are treated as instrumental in this context. Spoken words or Rap are clearly “vocal”. The closer the instrumentalness value is to 1.0, the greater likelihood the track contains no vocal content. Values above 0.5 are intended to represent instrumental tracks, but confidence is higher as the value approaches 1.0.
 
-ggplotly(rating_plot)
-```
+Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the recording (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value. Values above 0.66 describe tracks that are probably made entirely of spoken words. Values between 0.33 and 0.66 describe tracks that may contain both music and speech, either in sections or layered, including such cases as rap music. Values below 0.33 most likely represent music and other non-speech-like tracks.
+
+A normal assumption around any music is that if the song contains high number of words, it’s instrumentalness is bound to be low. However, for various genres, it is seen that the relation between speehiness and instrumentalness is a line of slope nearly 0. For rap, a different trend can be seen. A plot with negative line slope indicates a negative coorelation, i.e, with increase in the value of speechiness, the instrumentalness decreases.  
+
 
 ```{r}
 
 d1 = data %>% select(energy, liveness, playlist_genre)
 
-p = ggplot(d1, aes(liveness, energy)) + 
-  geom_density_2d() + facet_wrap(~playlist_genre)
+p = ggplot(d1, aes(liveness, energy, colour = factor(playlist_genre))) + 
+  geom_density_2d() + facet_wrap(~playlist_genre) + theme_light()
 ggplotly(p)
 
+
 ```
+
+To see the distribution of energy and liveness for various genres,  a scatter plot is plotted. The plot can help us understand the space at which the data is cluttered the most and the spread of the data.
+
+These plots can be inaluable when we want to understand what genre yeilds maximum liveness or energy. This is especially  important for music festivals/clubs where the songs to be played are of high energy and liveness.
+
+The following inferences can be drawn out of this plot - 
+
+For edm, the range of liveness is between 0 and 0.3 and the range of energy is between 0.6 and 1
+For latin, the range of liveness is between 0.05 and 0.2 and the range of energy is between 0.47 and 0.8
+For pop, the range of liveness is between 0.04 and 0.2 and the range of energy is between 0.6 and 0.9
+For r&b, the range of liveness is between 0.03 and 0.17 and the range of energy is between 0.2 and 0.86
+For rap, the range of liveness is between 0.04 and 0.2 and the range of energy is between 0.3 and 0.9
+For rock, the range of liveness is between 0.02 and 0.25 and the range of energy is between 0.4 and 0.95
+
+
 
 ```{r}
 a = data %>% select(track_name,acousticness,speechiness,energy,danceability,loudness)%>% group_by(track_name) %>% 
@@ -146,8 +200,27 @@ a = data %>% select(track_name,acousticness,speechiness,energy,danceability,loud
 a = head(a, 5) %>% select(!count)
 a = a %>% pivot_longer(!track_name, names_to = "Variables", values_to = "Values")
 
-ggplot(data=a, aes(x=Variables, y=Values))+geom_bar(aes(y=Values, fill=track_name),stat="identity", alpha=0.8 , position="dodge")+ ylab("Value")+ xlab("Variables of a song")+ggtitle("Top 5 songs in Spotify 2018 ")
+ggplot(data=a, aes(x=Variables, y=Values))+geom_bar(aes(y=Values, fill=track_name),stat="identity", alpha=0.8 , position="dodge", colour = 'black')+ ylab("Value")+ xlab("Variables of a song")+ggtitle("Top 5 songs in Spotify 2018 ")+
+  scale_fill_brewer(palette = "Blues") + theme_light()
 ```
+
+It's always exciting to listen to a trendy song. But how many of us have identified the parameters/qualities that these songs entail. More often than not, we fail to identify the various qualities these songs convey. It was therefore an exciting task to visualise the top 5 songs and compare them on various grounds. We plotted a grouped bar chart of the top 5 songs played with factors like - acousticness, danceability, energy,and speechiness. A general trend can be seen. All the top 5 songs have low values of acousticness and speechiness and high values of energy and danceability. This tells a lot about the kind of songs that are most heard. They are more energetic and are fun to dance on. It is something that the generation prefers. If the artists happen to come across these visualisations, they will know the secret to produce the song that makes it to the top.
+
+In this plot, Alive and Forever have the highest value of energy equal to 0.78. While more energy might hint for higher danceability, the visualisation portrays otherwise. Breathe and Forever have the highest value of danceability equal to 0.62. Another interesting fact to notice is that all the top 5 songs have low speechiness value. These songs have low words to music - something enjoyed by the 20th generation population.
+
+Songs with the highest song of variables - 
+
+acousticness - Stay
+danceability - Stay and Breathe
+energy - Forever and Alive
+speechiness - Forever
+
+Songs with the lowest value of song variables - 
+
+acousticness - Alive
+danceability - Poisoan
+energy - Stay
+speechiness - Stay and Alive
 
 
 
@@ -199,11 +272,122 @@ popartist = data %>%
 popartist$duration_ms = ifelse(popartist$duration_ms >= 220000, '200k+','220k-')
 
 vcd::mosaic(playlist_genre ~ track_artist + duration_ms, direction = c("v", "v", "h"),
-           highlighting_fill = rev(fills6), popartist)
+           highlighting_fill = rev(fills6), popartist) + theme_light()
+
+
+```
+To understand the distribution of the music produced by the top 3 artists and their duration in ms, a mosaic plot is plotted. The mosaic plot is split on the three basics - duration of songs produced by the top3 artists, genres of the songs, and the top 3 artists.  We can break the information depicted by the mosaic plots as follows - 
+
+Firstly, we split the data based on the duration heard. We can see that for Martin Garrix, there are more songs produced by him that have been heard over 220k times when compared to songs heard below 220k.
+
+For Queen and Chainsmokers, songs that have been heard below 220k times is greater than songs heard beyond 220k times.
+ 
+Queen has been a lead producer of songs of rock genre, Chainsmoker have been a lead producer of the pop genre, and Martin Garrix has been a lead producer of the edm genre.
+
+This representation can guide the artists about their overall performance and help them gauge their success based on the duration of the songs heard.
+
+
+
+```{r}
+
+pop = data %>%
+  group_by(track_artist) %>%
+  mutate(n = n()) %>%
+  mutate(Freq = n/sum(n)) %>% filter(n > 100) %>% 
+  select(track_artist, track_name,energy, loudness, liveness,valence, speechiness,danceability,playlist_genre) 
+
+a = pop %>% group_by(track_name) %>% mutate(count = n())
+
+names = c("David Guetta", "The Chainsmokers", "Martin Garrix", "Queen", "Don Omar")
+
+#x = data %>% filter(track_artist == i) 
+
+x1 = data %>% filter(track_artist == "David Guetta") %>% mutate(num = 1) %>% select(track_name,energy, loudness, liveness,valence, speechiness,danceability, playlist_genre )
+y1 = x1 %>% group_by(track_name) %>% mutate(count = n()) %>% arrange(desc(count))
+y1$track_artist ="David Guetta"
+write.csv(a,"david.csv", row.names = FALSE)
+
+x2 = data %>% filter(track_artist == "The Chainsmokers") %>% mutate(num = 1)%>% select(track_name,energy, loudness, liveness,valence, speechiness,danceability, playlist_genre )
+y2 = x2 %>% group_by(track_name) %>% mutate(count = n()) %>% arrange(desc(count))
+y2$track_artist ="The Chainsmokers"
+write.csv(a,"chainsmokers.csv", row.names = FALSE)
+
+x3 = data %>% filter(track_artist == "Martin Garrix") %>% mutate(num = 1)%>% select(track_name,energy, loudness, liveness,valence, speechiness,danceability, playlist_genre )
+y3 = x3 %>% group_by(track_name) %>% mutate(count = n()) %>% arrange(desc(count))
+y3$track_artist ="Martin Garrix"
+write.csv(a,"garrix.csv", row.names = FALSE)
+
+x4 = data %>% filter(track_artist == "Queen") %>% mutate(num = 1)%>% select(track_name,energy, loudness, liveness,valence, speechiness,danceability, playlist_genre, playlist_genre )
+y4 = x4 %>% group_by(track_name) %>% mutate(count = n()) %>% arrange(desc(count))
+y4$track_artist ="Queen"
+write.csv(a,"queen.csv", row.names = FALSE)
+
+x5 = data %>% filter(track_artist == "Don Omar") %>% mutate(num = 1)%>% select(track_name,energy, loudness, liveness,valence, speechiness,danceability, playlist_genre )
+y5 = x5 %>% group_by(track_name) %>% mutate(count = n()) %>% arrange(desc(count))
+y5$track_artist ="Don Omar"
+write.csv(a,"omar.csv", row.names = FALSE)
+
+a = rbind(y1,y2,y3,y4,y5)
+a = a %>% filter(loudness > -5)
+write.csv(a,"d3Data.csv", row.names = FALSE)
+
+```
+
+```{r}
+
+
+x1 = pop %>% filter(playlist_genre == "pop") %>% group_by(track_name,energy, liveness,valence, speechiness,danceability, track_artist,playlist_genre) %>% summarise(count = n()) %>% arrange(desc(count))
+x1 = head(x1,15)
+write.csv(x1, "pop.csv", row.names = FALSE)
+
+x2 = pop %>% filter(playlist_genre == "rap") %>% group_by(track_name,energy, liveness,valence, speechiness,danceability, track_artist,playlist_genre) %>% summarise(count = n()) %>% arrange(desc(count))
+x2 = head(x2,15)
+write.csv(x2, "rap.csv", row.names = FALSE)
+
+x3 = pop %>% filter(playlist_genre == "rock") %>% group_by(track_name,energy, liveness,valence, speechiness,danceability, track_artist,playlist_genre) %>% summarise(count = n()) %>% arrange(desc(count))
+x3 = head(x3,15)
+write.csv(x3, "rock.csv", row.names = FALSE)
+
+x4 = pop %>% filter(playlist_genre == "latin") %>% group_by(track_name,energy, liveness,valence, speechiness,danceability, track_artist,playlist_genre) %>% summarise(count = n()) %>% arrange(desc(count))
+x4 = head(x4,15)
+write.csv(x4, "latin.csv", row.names = FALSE)
+
+x5 = pop %>% filter(playlist_genre == "r&b") %>% group_by(track_name,energy, liveness,valence, speechiness,danceability, track_artist,playlist_genre) %>% summarise(count = n()) %>% arrange(desc(count))
+x5 = head(x5,15)
+write.csv(x5, "r&b.csv", row.names = FALSE)
+
+x6 = pop %>% filter(playlist_genre == "edm") %>% group_by(track_name,energy, liveness,valence, speechiness,danceability, track_artist,playlist_genre) %>% summarise(count = n()) %>% arrange(desc(count))
+x6 = head(x6,15)
+
+write.csv(x6, "edm.csv", row.names = FALSE)
+a = rbind(x1,x2,x3,x4,x5,x6)
+write.csv(a,"datad3.csv", row.names = FALSE)
+
+chain = a %>% filter(track_artist == "The Chainsmokers")
+queen = a %>% filter(track_artist == "Queen")
+don = a %>% filter(track_artist == "Don Omar")
+mar = a %>% filter(track_artist == "Martin Garrix")
+david = a %>% filter(track_artist == "David Guetta")
+
+write.csv(chain, "chain.csv", row.names = FALSE)
+write.csv(queen, "queen.csv", row.names = FALSE)
+write.csv(don, "don.csv", row.names = FALSE)
+write.csv(mar, "mar.csv", row.names = FALSE)
+write.csv(david, "david.csv", row.names = FALSE)
+
 
 
 ```
 
+```{r}
 
+
+popartist = data %>%
+  group_by(track_artist) %>%
+  mutate(n = n()) %>%
+  mutate(Freq = n/sum(n)) %>% filter(n > 60) %>% 
+  select(track_artist, playlist_genre) 
+
+a = data.frame(unique(popartist$track_artist))
 
 ```
