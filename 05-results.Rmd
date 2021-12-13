@@ -10,6 +10,12 @@ library(dplyr)
 library(GGally)
 library(plotly)
 library(patchwork)
+library(ggpubr)
+library(grid)
+library(gridExtra)
+library(treemap)
+library(viridis)
+
 ```
 
 
@@ -89,11 +95,15 @@ ggplot(popartist, aes(x =  track_artist, y = num, fill = playlist_genre)) +
   scale_fill_brewer(palette = "Blues") + theme_classic()
 
 ```
-To analyse the genres produced by the top 5 artists we have plotted a stacked bar chart to visualise the results. The plot can help us identify key factors like the genre preferences of an artist, the type of songs they have been producing, etc. It can also benefit the artist by understanding the competition in the music industry. They might want to study the genres produced by various artists and produce a one that is less common.
+To analyse the genres produced by the top 5 artists we have plotted a stacked bar chart to visualise the results. The plot can help us identify key factors like the genre preferences of an artist, the type of songs they have been producing, etc.
+
+**Important information to artists/producers - **
+
+It can also benefit the artist by understanding the competition in the music industry. They might want to study the genres produced by various artists and produce a one that is less common.
 
 From the plot, we can see that the high producers of the edm genre are David Guetta, Martin Garrix, and The Chainsmokers. One can say that Don Oman produces most songs of Latin genre as compared to other genres. He is also the leading producer of this type of genre when compared with other top artists. Similarly, Queen produces rock type of music the most as compared to any other genres. They are specialised in the rock genre. Drake on the other hand has produced music of all genres in a somewhat similar proportion (higher preferences to rap and r&b). There seems to be direct competition between  David Guetta and The Chainsmokers as they produce a competitive number of songs belonging to the genres edm and pop.
 
-Leaders in each genres - 
+**Leaders in each genres - **
 
 Edm - Martin Garrix
 Latin - Don Omar
@@ -123,11 +133,11 @@ ggplotly(b)
 ```
 To understand the trend of various genres over time it is imperative we capture their average duration of being played in a given year. 
 
-Important information to artists/producers - 
+**Important information to artists/producers - **
 
 The trend can convey important information to the artists and the producers of the song. It can tell if an artist should be working hard to produce a song of a particular genre or not. For example, as seen in the trend of the edm genre, it’s average duration of listening is tanking. It can be an indication that the audience prefers other genres over pop. An artist might therefore double question on the choice of a genre before finalizing one.
 
-Inferences - 
+**Inferences - **
 
 Several inferences can be drawn from the plot above - 
 
@@ -158,11 +168,11 @@ ggplot(words, aes(x = instrumentalness, y = speechiness)) + geom_point() +
 ```
 Before interpreting the above plot, it is important to understand the meaning of the two words - speechiness and instrumentalness.
 
-As described by tidytuesday - 
+**As described by tidytuesday - **
 
-Instrumentalness conveys whether a track contains no vocals. “Ooh” and “aah” sounds are treated as instrumental in this context. Spoken words or Rap are clearly “vocal”. The closer the instrumentalness value is to 1.0, the greater likelihood the track contains no vocal content. Values above 0.5 are intended to represent instrumental tracks, but confidence is higher as the value approaches 1.0.
+*Instrumentalness conveys whether a track contains no vocals. “Ooh” and “aah” sounds are treated as instrumental in this context. Spoken words or Rap are clearly “vocal”. The closer the instrumentalness value is to 1.0, the greater likelihood the track contains no vocal content. Values above 0.5 are intended to represent instrumental tracks, but confidence is higher as the value approaches 1.0.
 
-Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the recording (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value. Values above 0.66 describe tracks that are probably made entirely of spoken words. Values between 0.33 and 0.66 describe tracks that may contain both music and speech, either in sections or layered, including such cases as rap music. Values below 0.33 most likely represent music and other non-speech-like tracks.
+Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the recording (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value. Values above 0.66 describe tracks that are probably made entirely of spoken words. Values between 0.33 and 0.66 describe tracks that may contain both music and speech, either in sections or layered, including such cases as rap music. Values below 0.33 most likely represent music and other non-speech-like tracks.*
 
 A normal assumption around any music is that if the song contains high number of words, it’s instrumentalness is bound to be low. However, for various genres, it is seen that the relation between speehiness and instrumentalness is a line of slope nearly 0. For rap, a different trend can be seen. A plot with negative line slope indicates a negative coorelation, i.e, with increase in the value of speechiness, the instrumentalness decreases.  
 
@@ -182,7 +192,7 @@ To see the distribution of energy and liveness for various genres,  a scatter pl
 
 These plots can be inaluable when we want to understand what genre yeilds maximum liveness or energy. This is especially  important for music festivals/clubs where the songs to be played are of high energy and liveness.
 
-The following inferences can be drawn out of this plot - 
+**The following inferences can be drawn out of this plot - **
 
 For edm, the range of liveness is between 0 and 0.3 and the range of energy is between 0.6 and 1
 For latin, the range of liveness is between 0.05 and 0.2 and the range of energy is between 0.47 and 0.8
@@ -208,14 +218,14 @@ It's always exciting to listen to a trendy song. But how many of us have identif
 
 In this plot, Alive and Forever have the highest value of energy equal to 0.78. While more energy might hint for higher danceability, the visualisation portrays otherwise. Breathe and Forever have the highest value of danceability equal to 0.62. Another interesting fact to notice is that all the top 5 songs have low speechiness value. These songs have low words to music - something enjoyed by the 20th generation population.
 
-Songs with the highest song of variables - 
+**Songs with the highest song of variables - **
 
 acousticness - Stay
 danceability - Stay and Breathe
 energy - Forever and Alive
 speechiness - Forever
 
-Songs with the lowest value of song variables - 
+**Songs with the lowest value of song variables - **
 
 acousticness - Alive
 danceability - Poisoan

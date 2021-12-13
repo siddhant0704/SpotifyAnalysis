@@ -1,0 +1,82 @@
+"track_name","energy","liveness","valence","speechiness","danceability","track_artist","playlist_genre","count"
+"Closer (feat. Halsey)",0.524,0.111,0.661,0.0338,0.748,"The Chainsmokers","pop",4
+"Better When You're Gone",0.795,0.188,0.409,0.0372,0.647,"David Guetta","pop",3
+"Don't Let Me Down",0.869,0.136,0.422,0.172,0.532,"The Chainsmokers","pop",3
+"High On Life (feat. Bonn)",0.486,0.111,0.368,0.0311,0.414,"Martin Garrix","pop",3
+"Like I Do",0.9,0.37,0.15,0.0377,0.635,"David Guetta","pop",3
+"No Sleep (feat. Bonn)",0.635,0.121,0.327,0.0326,0.44,"Martin Garrix","pop",3
+"Roses",0.802,0.309,0.343,0.0561,0.713,"The Chainsmokers","pop",3
+"Takeaway (feat. Lennon Stella)",0.505,0.0977,0.357,0.042,0.294,"The Chainsmokers","pop",3
+"Titanium (feat. Sia)",0.787,0.127,0.301,0.103,0.604,"David Guetta","pop",3
+"Who Do You Love",0.835,0.219,0.435,0.0447,0.51,"The Chainsmokers","pop",3
+"All We Know",0.586,0.115,0.296,0.0307,0.662,"The Chainsmokers","pop",2
+"Bad (feat. Vassy) - Radio Edit",0.972,0.328,0.411,0.088,0.614,"David Guetta","pop",2
+"Call You Mine",0.702,0.414,0.501,0.0289,0.591,"The Chainsmokers","pop",2
+"Do You Mean (feat. Ty Dolla $ign & bülow)",0.666,0.118,0.566,0.0394,0.6,"The Chainsmokers","pop",2
+"In the Name of Love",0.519,0.454,0.168,0.0409,0.501,"Martin Garrix","pop",2
+"Closer - T-Mass Remix",0.821,0.0796,0.608,0.0444,0.7,"The Chainsmokers","rap",1
+"Closer (feat. Halsey)",0.524,0.111,0.661,0.0338,0.748,"The Chainsmokers","rap",1
+"Danza Kuduro - Radio Edit",0.899,0.043,0.887,0.12,0.699,"Don Omar","rap",1
+"Don't Let Me Down",0.869,0.136,0.422,0.172,0.532,"The Chainsmokers","rap",1
+"Don't Let Me Down - Illenium Remix",0.656,0.15,0.355,0.075,0.428,"The Chainsmokers","rap",1
+"Helicopter - Video Edit",0.96,0.175,0.165,0.0379,0.584,"Martin Garrix","rap",1
+"Memories (feat. Kid Cudi)",0.899,0.229,0.47,0.233,0.546,"David Guetta","rap",1
+"Play Hard (feat. Ne-Yo & Akon)",0.921,0.331,0.8,0.0533,0.691,"David Guetta","rap",1
+"Side Effects - Nolan van Lith Remix",0.939,0.0561,0.516,0.0977,0.548,"The Chainsmokers","rap",1
+"Siren",0.779,0.371,0.264,0.107,0.588,"The Chainsmokers","rap",1
+"Wizard - Radio Edit",0.916,0.617,0.0795,0.052,0.565,"Martin Garrix","rap",1
+"39 - 2011 Mix",0.571,0.111,0.373,0.0273,0.524,"Queen","rock",2
+"Another One Bites The Dust - Remastered 2011",0.528,0.163,0.754,0.161,0.933,"Queen","rock",2
+"Bohemian Rhapsody - 2011 Mix",0.402,0.243,0.228,0.0536,0.392,"Queen","rock",2
+"Death On Two Legs (Dedicated To...) - Remastered 2011",0.691,0.133,0.499,0.0554,0.373,"Queen","rock",2
+"Princes Of The Universe",0.623,0.313,0.34,0.0633,0.396,"Queen","rock",2
+"Sheer Heart Attack - Remastered 2011",0.938,0.359,0.383,0.126,0.155,"Queen","rock",2
+"Somebody To Love - 2011 Mix",0.693,0.215,0.358,0.0565,0.497,"Queen","rock",2
+"Somebody To Love - 2011 Mix",0.698,0.127,0.349,0.0629,0.466,"Queen","rock",2
+"Stone Cold Crazy - Remastered 2011",0.922,0.0954,0.439,0.0924,0.429,"Queen","rock",2
+"We Are The Champions - Remastered 2011",0.459,0.118,0.175,0.0346,0.268,"Queen","rock",2
+"We Will Rock You - Remastered",0.497,0.258,0.473,0.119,0.693,"Queen","rock",2
+"Action This Day - Remastered 2011",0.478,0.0801,0.909,0.0403,0.727,"Queen","rock",1
+"All Dead, All Dead - Remastered 2011",0.0765,0.114,0.305,0.0416,0.491,"Queen","rock",1
+"Another One Bites The Dust",0.392,0.123,0.771,0.122,0.922,"Queen","rock",1
+"Another One Bites The Dust - Remastered 2011",0.528,0.163,0.756,0.162,0.933,"Queen","rock",1
+"Closer (feat. Halsey)",0.524,0.111,0.661,0.0338,0.748,"The Chainsmokers","latin",3
+"Danza Kuduro",0.915,0.0503,0.878,0.28,0.4,"Don Omar","latin",3
+"Perdido En Tus Ojos",0.882,0.226,0.787,0.0312,0.684,"Don Omar","latin",3
+"Zumba",0.894,0.128,0.832,0.0397,0.729,"Don Omar","latin",3
+"Blue Zone",0.712,0.455,0.478,0.0541,0.796,"Don Omar","latin",2
+"Call You Mine",0.702,0.414,0.501,0.0289,0.591,"The Chainsmokers","latin",2
+"Dale Don Dale",0.852,0.13,0.813,0.0789,0.825,"Don Omar","latin",2
+"Dile",0.714,0.042,0.714,0.141,0.817,"Don Omar","latin",2
+"Dutty Love",0.873,0.114,0.899,0.082,0.742,"Don Omar","latin",2
+"En Su Nota",0.843,0.156,0.883,0.272,0.657,"Don Omar","latin",2
+"Good Looking",0.88,0.814,0.757,0.156,0.629,"Don Omar","latin",2
+"Guaya Guaya",0.873,0.0908,0.703,0.117,0.788,"Don Omar","latin",2
+"Hasta Abajo",0.919,0.0882,0.683,0.0792,0.697,"Don Omar","latin",2
+"Hooka",0.863,0.491,0.818,0.154,0.73,"Don Omar","latin",2
+"No Se De Ella ""My Space""",0.676,0.242,0.77,0.0934,0.815,"Don Omar","latin",2
+"Takeaway (feat. Lennon Stella)",0.505,0.0977,0.357,0.042,0.294,"The Chainsmokers","r&b",2
+"Call You Mine",0.702,0.414,0.501,0.0289,0.591,"The Chainsmokers","r&b",1
+"Closer (feat. Halsey)",0.524,0.111,0.661,0.0338,0.748,"The Chainsmokers","r&b",1
+"Do You Mean (feat. Ty Dolla $ign & bülow)",0.666,0.118,0.566,0.0394,0.6,"The Chainsmokers","r&b",1
+"Family",0.607,0.101,0.374,0.0356,0.584,"The Chainsmokers","r&b",1
+"Roses",0.802,0.309,0.343,0.0561,0.713,"The Chainsmokers","r&b",1
+"Sick Boy",0.58,0.127,0.462,0.121,0.548,"The Chainsmokers","r&b",1
+"So Far Away (feat. Jamie Scott & Romy Dya)",0.52,0.197,0.13,0.0569,0.526,"Martin Garrix","r&b",1
+"Somebody",0.63,0.102,0.323,0.0493,0.32,"The Chainsmokers","r&b",1
+"Who Do You Love",0.783,0.174,0.493,0.0388,0.529,"The Chainsmokers","r&b",1
+"Helicopter - Video Edit",0.96,0.175,0.165,0.0379,0.584,"Martin Garrix","edm",5
+"Bad (feat. Vassy) - Radio Edit",0.972,0.328,0.411,0.088,0.614,"David Guetta","edm",4
+"Lions in the Wild",0.847,0.816,0.28,0.0442,0.504,"Martin Garrix","edm",4
+"Dreamer - Nicky Romero Remix",0.751,0.253,0.346,0.0599,0.435,"Martin Garrix","edm",3
+"Forbidden Voices",0.711,0.135,0.3,0.0368,0.534,"Martin Garrix","edm",3
+"High On Life (feat. Bonn)",0.486,0.111,0.368,0.0311,0.414,"Martin Garrix","edm",3
+"Hold On (feat. Michel Zitron)",0.711,0.559,0.321,0.0385,0.422,"Martin Garrix","edm",3
+"In the Name of Love",0.519,0.454,0.168,0.0409,0.501,"Martin Garrix","edm",3
+"Like I Do",0.9,0.37,0.15,0.0377,0.635,"David Guetta","edm",3
+"Lovers on the Sun (feat. Sam Martin)",0.891,0.379,0.568,0.0387,0.645,"David Guetta","edm",3
+"Mistaken (feat. Alex Aris)",0.694,0.133,0.0801,0.0386,0.424,"Martin Garrix","edm",3
+"No Sleep (feat. Bonn) - DubVision Remix",0.79,0.213,0.291,0.0589,0.584,"Martin Garrix","edm",3
+"Shot Me Down (feat. Skylar Grey) - Radio Edit",0.772,0.115,0.035,0.0549,0.347,"David Guetta","edm",3
+"Used To Love (with Dean Lewis)",0.693,0.335,0.392,0.0375,0.651,"Martin Garrix","edm",3
+"Waiting For Tomorrow (feat. Mike Shinoda)",0.887,0.562,0.336,0.141,0.507,"Martin Garrix","edm",3
