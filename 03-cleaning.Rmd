@@ -1,1 +1,25 @@
 # Data transformation
+
+The Spotify dataset needed some classification and transformations before it could be used to draw insights.
+
+The following transformations were performed on the dataset - 
+
+**Remove Null values**
+
+It was observed that the data set contained several NA values (total = 708) captured in 9 columns namely - playlist_name, track_album_name, track_album_id, track_album_release_date, tempo, danceability, energy, track_name, and track_artist. The final clean dataset is obtained by filtering out the NA values from the aforementioned columns.
+
+**Remove Duplicates**
+
+Duplicate tracks are filtered and removed from the data set using the duplicated function. The dataset so obtained is free from any duplication in the tracks column.
+
+**Transform the Variables**
+
+The following columns have been converted into factors - genre, sub genre, mode and key to factors to facilitate efficient data analysis and visualization.
+
+**Adding new columns**
+
+A year column has been added to the data set using a substring method called on the track_album_release_date column. 
+
+**Removing Variables**
+
+track_id, track_album_id and playlist_id are the columns that have been dropped from the dataset since they did not add any meaningful insight and were useful for our analysis. 

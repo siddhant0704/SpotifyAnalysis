@@ -24,7 +24,7 @@
 <meta name="author" content="Siddhant Kumar, Vedant Kumar" />
 
 
-<meta name="date" content="2021-11-19" />
+<meta name="date" content="2021-12-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -85,8 +85,14 @@
 <li class="chapter" data-level="4.2" data-path="missing-values.html"><a href="missing-values.html#cleveland-plot"><i class="fa fa-check"></i><b>4.2</b> Cleveland Plot</a>
 <ul>
 <li class="chapter" data-level="4.2.1" data-path="missing-values.html"><a href="missing-values.html#secondy-we-try-to-infer-the-relation-of-frequency-of-na-terms-with-columns-by-potting-cleveland-plot.-the-plot-has-x-axis-representing-the-column-name-and-y-axis-representing-the-freqency-of-na-terms.-it-can-be-seen-that-majority-of-the-columns-dont-have-na-enries.-and-the-highest-number-of-na-entry-in-a-column-is-close-to-150."><i class="fa fa-check"></i><b>4.2.1</b> Secondy, we try to infer the relation of frequency of NA terms with columns by potting cleveland plot. The plot has x axis representing the column name and y axis representing the freqency of NA terms. It can be seen that majority of the columns don’t have NA enries. And the highest number of NA entry in a column is close to 150.</a></li>
-<li class="chapter" data-level="4.2.2" data-path="missing-values.html"><a href="missing-values.html#finally-we-created-a-heatmap-of-the-subset-of-a-databecause-the-size-of-the-data-is-large-to-cover-every-scenario.-it-can-be-seen-that-column-with-name-dn-has-all-rows-having-na-for-the-selected-25-rows."><i class="fa fa-check"></i><b>4.2.2</b> Finally, we created a heatmap of the subset of a data(because the size of the data is large to cover every scenario). It can be seen that column with name ‘dn’ has all rows having NA for the selected 25 rows.</a></li>
-<li class="chapter" data-level="4.2.3" data-path="missing-values.html"><a href="missing-values.html#missing-patterns-function-implementation-on-spotify-dataset"><i class="fa fa-check"></i><b>4.2.3</b> Missing patterns function implementation on Spotify Dataset</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="missing-values.html"><a href="missing-values.html#heatmap"><i class="fa fa-check"></i><b>4.3</b> Heatmap</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="missing-values.html"><a href="missing-values.html#finally-we-created-a-heatmap-of-the-subset-of-a-databecause-the-size-of-the-data-is-large-to-cover-every-scenario.-it-can-be-seen-that-column-with-name-dn-has-all-rows-having-na-for-the-selected-25-rows."><i class="fa fa-check"></i><b>4.3.1</b> Finally, we created a heatmap of the subset of a data(because the size of the data is large to cover every scenario). It can be seen that column with name ‘dn’ has all rows having NA for the selected 25 rows.</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="missing-values.html"><a href="missing-values.html#missing-patterns-function"><i class="fa fa-check"></i><b>4.4</b> Missing patterns function</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="missing-values.html"><a href="missing-values.html#missing-patterns-function-implementation-on-spotify-dataset"><i class="fa fa-check"></i><b>4.4.1</b> Missing patterns function implementation on Spotify Dataset</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a></li>
@@ -113,6 +119,29 @@
             <section class="normal" id="section-">
 <div id="data-sources" class="section level1" number="2">
 <h1><span class="header-section-number">Chapter 2</span> Data sources</h1>
+<p>The data selected for the visualisation project is from the Tidytuesday dataset on Spotify songs. The data origiantes from Spotify via the spotifyr package. the authors of the package are Charlie Thompson, Josiah Parry, Donal Phipps, and Tom Wolff. The Dataset contains 21 rows of distinct features and 32523 columns of data.</p>
+<p><strong>Description of Attributes</strong></p>
+<p>Following are the attributes present in the Spotify dataset -</p>
+<p><em>track_id</em> : Track ID on song</p>
+<p><em>track_name</em> : Name of the song</p>
+<p><em>track_artist</em> : Name of the artist</p>
+<p><em>track_popularity</em> : Measure the popularity of the track from 0 to 100 based on it’s play number</p>
+<p><em>track_album_release_date</em> : Release date of the song</p>
+<p><em>track_album_name</em> : Album name of the song</p>
+<p><em>playlist_name</em> : Playlst name of the corresponding track/song name</p>
+<p><em>playlist_genre</em> : Genre name of the the song</p>
+<p><em>acousticness</em> : Measure of how acoustic the track is. It’s value ranges from 0.0 to 1.0</p>
+<p><em>danceability</em> : Describes how danceable the song is. It’s value ranges from 0.0 to 1.0. 0.0 being least danceable and 1.0 being most danceable.</p>
+<p><em>duration_ms</em> : The duration of the track in milliseconds(ms)</p>
+<p><em>energy</em> : Measure of the energy of the song based on intensity and activity. It’s value ranges from 0.0 to 1.0</p>
+<p><em>instrumentalness</em> : Measures whether a track contains vocals. It’s values ranges from 0.0 to 1.0</p>
+<p><em>speechiness</em> - Detects the presence of spoken words in a track.</p>
+<p><em>valence</em> - Describes the positiveness conveyed by the track. It’s value ranges from 0.0 to 1.0</p>
+<p><em>key</em> : Represents the overall key of the track.</p>
+<p><em>liveness</em> - Describes if the song was performed live or was recorded in the studio.</p>
+<p><em>loudness</em> - Descries the overall loudness of a track in decibels (dB). It’s values range between -60dB to 0 dB.</p>
+<p><em>mode</em> - Represents the modality (major or minor) of a track. Major is represented by 1 and minor is represented by 0.</p>
+<p><em>tempo</em> Overall estimated tempo of a track in beats per minute (BPM).</p>
 
 </div>
             </section>

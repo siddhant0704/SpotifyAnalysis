@@ -24,7 +24,7 @@
 <meta name="author" content="Siddhant Kumar, Vedant Kumar" />
 
 
-<meta name="date" content="2021-11-19" />
+<meta name="date" content="2021-12-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -85,8 +85,14 @@
 <li class="chapter" data-level="4.2" data-path="missing-values.html"><a href="missing-values.html#cleveland-plot"><i class="fa fa-check"></i><b>4.2</b> Cleveland Plot</a>
 <ul>
 <li class="chapter" data-level="4.2.1" data-path="missing-values.html"><a href="missing-values.html#secondy-we-try-to-infer-the-relation-of-frequency-of-na-terms-with-columns-by-potting-cleveland-plot.-the-plot-has-x-axis-representing-the-column-name-and-y-axis-representing-the-freqency-of-na-terms.-it-can-be-seen-that-majority-of-the-columns-dont-have-na-enries.-and-the-highest-number-of-na-entry-in-a-column-is-close-to-150."><i class="fa fa-check"></i><b>4.2.1</b> Secondy, we try to infer the relation of frequency of NA terms with columns by potting cleveland plot. The plot has x axis representing the column name and y axis representing the freqency of NA terms. It can be seen that majority of the columns don’t have NA enries. And the highest number of NA entry in a column is close to 150.</a></li>
-<li class="chapter" data-level="4.2.2" data-path="missing-values.html"><a href="missing-values.html#finally-we-created-a-heatmap-of-the-subset-of-a-databecause-the-size-of-the-data-is-large-to-cover-every-scenario.-it-can-be-seen-that-column-with-name-dn-has-all-rows-having-na-for-the-selected-25-rows."><i class="fa fa-check"></i><b>4.2.2</b> Finally, we created a heatmap of the subset of a data(because the size of the data is large to cover every scenario). It can be seen that column with name ‘dn’ has all rows having NA for the selected 25 rows.</a></li>
-<li class="chapter" data-level="4.2.3" data-path="missing-values.html"><a href="missing-values.html#missing-patterns-function-implementation-on-spotify-dataset"><i class="fa fa-check"></i><b>4.2.3</b> Missing patterns function implementation on Spotify Dataset</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="missing-values.html"><a href="missing-values.html#heatmap"><i class="fa fa-check"></i><b>4.3</b> Heatmap</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="missing-values.html"><a href="missing-values.html#finally-we-created-a-heatmap-of-the-subset-of-a-databecause-the-size-of-the-data-is-large-to-cover-every-scenario.-it-can-be-seen-that-column-with-name-dn-has-all-rows-having-na-for-the-selected-25-rows."><i class="fa fa-check"></i><b>4.3.1</b> Finally, we created a heatmap of the subset of a data(because the size of the data is large to cover every scenario). It can be seen that column with name ‘dn’ has all rows having NA for the selected 25 rows.</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="missing-values.html"><a href="missing-values.html#missing-patterns-function"><i class="fa fa-check"></i><b>4.4</b> Missing patterns function</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="missing-values.html"><a href="missing-values.html#missing-patterns-function-implementation-on-spotify-dataset"><i class="fa fa-check"></i><b>4.4.1</b> Missing patterns function implementation on Spotify Dataset</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a></li>
@@ -113,6 +119,18 @@
             <section class="normal" id="section-">
 <div id="data-transformation" class="section level1" number="3">
 <h1><span class="header-section-number">Chapter 3</span> Data transformation</h1>
+<p>The Spotify dataset needed some classification and transformations before it could be used to draw insights.</p>
+<p>The following transformations were performed on the dataset -</p>
+<p><strong>Remove Null values</strong></p>
+<p>It was observed that the data set contained several NA values (total = 708) captured in 9 columns namely - playlist_name, track_album_name, track_album_id, track_album_release_date, tempo, danceability, energy, track_name, and track_artist. The final clean dataset is obtained by filtering out the NA values from the aforementioned columns.</p>
+<p><strong>Remove Duplicates</strong></p>
+<p>Duplicate tracks are filtered and removed from the data set using the duplicated function. The dataset so obtained is free from any duplication in the tracks column.</p>
+<p><strong>Transform the Variables</strong></p>
+<p>The following columns have been converted into factors - genre, sub genre, mode and key to factors to facilitate efficient data analysis and visualization.</p>
+<p><strong>Adding new columns</strong></p>
+<p>A year column has been added to the data set using a substring method called on the track_album_release_date column.</p>
+<p><strong>Removing Variables</strong></p>
+<p>track_id, track_album_id and playlist_id are the columns that have been dropped from the dataset since they did not add any meaningful insight and were useful for our analysis.</p>
 
 </div>
             </section>

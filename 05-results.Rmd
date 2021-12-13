@@ -33,6 +33,7 @@ colsna = colSums(is.na(data)) %>%
 cols = colnames(data)
 #Remove NA entries
 data = data %>% filter(!is.na(playlist_name) & !is.na(track_album_name) & !is.na(track_album_id) & !is.na(track_album_release_date) & !is.na(tempo) & !is.na(danceability) & !is.na(energy) & !is.na(track_name) & !is.na(track_artist))
+
 #Add a year column in the dataset
 data$year = as.numeric(substring(data$track_album_release_date,1,4))
 #removing unnecessary colums from the data 
@@ -128,6 +129,7 @@ a = rbind(dur_rb, dur_edm, dur_latin, dur_pop, dur_rock, dur_rap)
 
 b = ggplot(a, aes(x = year, y = avg, colour = factor(playlist_genre))) + 
   geom_line(size = 1) + ylab('Avg Duration (ms)') + xlab('Year')+ theme_light() + facet_wrap(~playlist_genre)
+
 ggplotly(b)
 
 ```

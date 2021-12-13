@@ -1,2 +1,48 @@
 # Data sources
 
+The data selected for the visualisation project is from the Tidytuesday dataset on Spotify songs. The data origiantes from Spotify via the spotifyr package. the authors of the package are Charlie Thompson, Josiah Parry, Donal Phipps, and Tom Wolff. The Dataset contains 21 rows of distinct features and 32523 columns of data.
+
+
+**Description of Attributes**
+
+Following are the attributes present in the Spotify dataset - 
+
+*track_id* : Track ID on song
+
+*track_name* : Name of the song
+
+*track_artist* : Name of the artist
+
+*track_popularity* : Measure the popularity of the track from 0 to 100 based on it's play number
+
+*track_album_release_date* : Release date of the song
+
+*track_album_name* : Album name of the song
+
+*playlist_name* : Playlst name of the corresponding track/song name
+
+*playlist_genre* : Genre name of the the song
+
+*acousticness* : Measure of how acoustic the track is. It's value ranges from 0.0 to 1.0
+
+*danceability* : Describes how danceable the song is. It's value ranges from 0.0 to 1.0. 0.0 being least danceable and 1.0 being most danceable.
+
+*duration_ms* : The duration of the track in milliseconds(ms)
+
+*energy* : Measure of the energy of the song based on intensity and activity. It's value ranges from 0.0 to 1.0
+
+*instrumentalness* : Measures whether a track contains vocals. It's values ranges from 0.0 to 1.0
+
+*speechiness* - Detects the presence of spoken words in a track.
+
+*valence* - Describes the positiveness conveyed by the track. It's value ranges from 0.0 to 1.0
+
+*key* : Represents the overall key of the track.
+
+*liveness* - Describes if the song was performed live or was recorded in the studio.
+
+*loudness* - Descries the overall loudness of a track in decibels (dB). It's values range between -60dB to 0 dB.
+
+*mode* - Represents the modality (major or minor) of a track. Major is represented by 1 and minor is represented by 0.
+
+*tempo* Overall estimated tempo of a track in beats per minute (BPM).
