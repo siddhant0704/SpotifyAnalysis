@@ -454,13 +454,13 @@ tm <- treemap(top_genre, index = c("playlist_genre", "track_artist"), vSize = "n
 
 ```
 
-# Here to depict the top 15 artists in each of the 6 playlist genre, we used a Treemap. The different colors demarcate the different genres whereas the size of the boxes in the treemap corresponds to the number of tracks played by listeners of an artist. Listeners of edm music clearly show more affection towards the songs produced by Martin Garrix, Dimitri Vegas & Like Mike and Hardwell. For all the other artists there is no dominance. 
+Here to depict the top 15 artists in each of the 6 playlist genre, we used a Treemap. The different colors demarcate the different genres whereas the size of the boxes in the treemap corresponds to the number of tracks played by listeners of an artist. Listeners of edm music clearly show more affection towards the songs produced by Martin Garrix, Dimitri Vegas & Like Mike and Hardwell. For all the other artists there is no dominance. 
 
-# Similar preferrance can be seen for Queen and Guns N Roses band in rock and Don Omar, Daddy Yankee and Wisin and Yandel in Latin. For songs that fall in the genre of Pop and r&b, the listeners have a diverse choice and no band or group of musicians are dominating. It can also be observed that a lot of artists/groups that are popular in edm have shown remarkable popularity in pop. For example- David Guetta and Calvin Harris are amongst the few artists to feature in more than 1 genree of top 15 artists. 
+Similar preferrance can be seen for Queen and Guns N Roses band in rock and Don Omar, Daddy Yankee and Wisin and Yandel in Latin. For songs that fall in the genre of Pop and r&b, the listeners have a diverse choice and no band or group of musicians are dominating. It can also be observed that a lot of artists/groups that are popular in edm have shown remarkable popularity in pop. For example- David Guetta and Calvin Harris are amongst the few artists to feature in more than 1 genree of top 15 artists. 
 
-# Lastly based on the overall size, it can be seen that edm and rap cover a larger area of treemap thus indicating that these genres are most popular along the other 4 genres. While, pop and r&b show lower popularity amongst the listeners of the spotify dataset. 
+Lastly based on the overall size, it can be seen that edm and rap cover a larger area of treemap thus indicating that these genres are most popular along the other 4 genres. While, pop and r&b show lower popularity amongst the listeners of the spotify dataset. 
 
-# This visualisation can help artists keep track of other popular artists in different genres. This can also help them understand which artists/bands to look upto i.e their advertisement/ marketing strategies et al. if they plan on releasing songs outside of their genre.
+This visualisation can help artists keep track of other popular artists in different genres. This can also help them understand which artists/bands to look upto i.e their advertisement/ marketing strategies et al. if they plan on releasing songs outside of their genre.
 
 ```{r}
 
