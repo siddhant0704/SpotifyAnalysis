@@ -391,3 +391,207 @@ popartist = data %>%
 a = data.frame(unique(popartist$track_artist))
 
 ```
+
+
+```{r}
+
+# Ridge density plot for Dancibility/ Energy/ Loudness / Speechiness for each genre
+  
+library(ggridges)
+
+data1 = data %>% select(energy, danceability, playlist_genre, speechiness, loudness, track_popularity) %>% filter(track_popularity> 70)
+
+g1 <- data1 %>% ggplot() + 
+  geom_density_ridges(aes(danceability , playlist_genre,fill = playlist_genre), alpha = .3) + 
+  ylab("Playlist Genre") + 
+  xlab("Dancibility") +
+  ggtitle("Dancibility")
+
+g2 <- data1 %>% ggplot() + 
+  geom_density_ridges(aes(energy, playlist_genre, fill = playlist_genre),alpha = .3) +
+  ylab("Playlist Genre") + 
+  xlab("Energy") +
+  ggtitle("Energy")
+
+g3 <- data1 %>% ggplot() + 
+  geom_density_ridges(aes(loudness, playlist_genre, fill = playlist_genre), alpha = .3) +
+  ylab("Playlist Genre") + 
+  xlab("Loudness") +
+  ggtitle("Loudness")
+
+g4 <- data1 %>% ggplot() + 
+  geom_density_ridges(aes(speechiness, playlist_genre, fill = playlist_genre), alpha = .3) +
+  ylab("Playlist Genre") + 
+  xlab("SPeechiness") +
+  ggtitle("Speechiness")
+
+
+p <- ggarrange(g1, g2, g3, g4, ncol=2, nrow = 2,  common.legend = TRUE, legend="bottom")
+
+annotate_figure(p, top = textGrob("Ridge Density plot for each genre",gp=gpar(fontsize=15)))
+
+
+```
+In the graph below we used ridge regression since, we the spotify playlist genre had multiple attributes against each of the music charecteristics - Dancebility, Energy, loudness and speechiness.
+
+For dancebility, it can be inferred that the graphs for all the genres are nearly uniformally distributed. Listenrs of rap and latin music usually enjoy dancing to the beats whereas edm and rock music despite generating most energy amongst the listenrs is not preferred for dancing. 
+
+For energy, the distributtions are less uniform and more skewed towards the left. Rock and Edm genre usually produce high intensity music and hence listerns higher levels of energy listening to these genres. It can be seen that r&b has the most uniform grpahs showing that its music has a mix of low and high intensity songs i.e both slow, soft and loud , fast. Hence we can see such wide distribution in case of r&b. 
+
+For loudness it can be seen that all the genres produce songs of a similar amplitude. Usually loduness can be related with energy. Genres such as edm and rock are mostly composed of loud music and hence is an important characteristic in inflicting high energy amongst its listeners. 
+
+From speechiness it can be inferred that most of the listeners of this spotify dataset enjoy listening to more instrumental and less of spoken words. Since rap music is one of the most popular type of vocal music. hence its distribution is more evenly spaced out incomparision to other genres.   
+
+Using this visualisation, artists can use the trusted speechiness. loudness values which will keep the fans hooked on their songs. Understanding a perfect blend of different different song parameters beyond this graph will ensure higher dancebility and energy amongst the listernes and eventually make them and their songs popular. 
+
+```{r}
+# treemap depicts top 15 track artists with in each of the 6 playlist genre. The size of the boxes in treemap corresponds to the count tracks for the artists.
+library(treemap) 
+library(viridis)
+top_genre <- data %>% select(playlist_genre, track_artist, track_popularity) %>% group_by(playlist_genre,track_artist) %>% summarise(n = n()) %>% top_n(15, n)
+
+tm <- treemap(top_genre, index = c("playlist_genre", "track_artist"), vSize = "n", vColor = 'playlist_genre', palette =  viridis(6),title="Top 15 Track Artists within each Playlist Genre")
+
+```
+
+# Here to depict the top 15 artists in each of the 6 playlist genre, we used a Treemap. The different colors demarcate the different genres whereas the size of the boxes in the treemap corresponds to the number of tracks played by listeners of an artist. Listeners of edm music clearly show more affection towards the songs produced by Martin Garrix, Dimitri Vegas & Like Mike and Hardwell. For all the other artists there is no dominance. 
+
+# Similar preferrance can be seen for Queen and Guns N Roses band in rock and Don Omar, Daddy Yankee and Wisin and Yandel in Latin. For songs that fall in the genre of Pop and r&b, the listeners have a diverse choice and no band or group of musicians are dominating. It can also be observed that a lot of artists/groups that are popular in edm have shown remarkable popularity in pop. For example- David Guetta and Calvin Harris are amongst the few artists to feature in more than 1 genree of top 15 artists. 
+
+# Lastly based on the overall size, it can be seen that edm and rap cover a larger area of treemap thus indicating that these genres are most popular along the other 4 genres. While, pop and r&b show lower popularity amongst the listeners of the spotify dataset. 
+
+# This visualisation can help artists keep track of other popular artists in different genres. This can also help them understand which artists/bands to look upto i.e their advertisement/ marketing strategies et al. if they plan on releasing songs outside of their genre.
+
+```{r}
+
+  minutesMostListened = data %>% 
+  group_by(track_artist) %>% 
+  summarize(minutesListened = sum(duration_ms)/60000) %>% 
+  filter(minutesListened >= 180) %>%
+  ggplot(aes(x = track_artist, y = minutesListened)) + 
+  geom_col(aes(fill = minutesListened)) +
+  scale_fill_gradient(low = "yellow", high = "red") + 
+  labs(x= "Artist", y= "Minutes of music playback") + 
+  ggtitle("What were the most listened artists on my Spotify dataset?", "> 3 hours listened") +
+  theme(axis.text.x = element_text(angle = 90))
+minutesMostListened
+
+```
+Here we have plotted a heatmap showing hot and cold regions between various attributes of the dataset. For track popularity > = 0.5, heatmap helps us to visualise the relation between the various attributes. For eg, songs that inflict a sense of energy, have a higher dancebility factor. 
+
+Furthermore, it is observed that too short or too long duration songs do not energise the listeners. Listeners prefer songs that last for a minimum duration of 200 seconds and goes to a high of 300 seconds. 
+
+
+This graph shows us the most listened artist in the spotify dataset. Since, we had more than a thousand artists, filtering the data by duration helped us segregate the artists whose songs were heard for more than hours. The histogram is used to compare the  popularity amongst artists. Matrin Garrix that was popular both in pop and edm genre and hence is played for the longest duration by its neighbors.
+
+Using such data, spotify can work on its marketing strategy to check on ways of improving recognition almongst the less prominent artists. This can be done by showing more advertisements or song suggestions of the lesser popular singers so that listerners listen to them. Such stategy will make listeners spend more time on the spotify platform and can potentially increase their revenue. 
+
+```{r}
+feature_names <- names(data)[9:20]
+
+
+data_corr = data %>%
+  dplyr::select(feature_names) %>%
+  scale() %>%
+  cor() %>%
+  corrplot::corrplot(method = 'color', 
+                     order = 'hclust', 
+                     type = 'upper', 
+                     diag = FALSE, 
+                     tl.col = 'black',
+                     addCoef.col = "grey30",
+                     number.cex = .7,
+                     col = colorRampPalette(colors = c('red','white','blue'))(200),
+                     main = 'Audio Feature Correlation',
+                     mar = c(2,2,2,2),
+                     family = 'Avenir',
+                     number.digits = 1.
+                     
+                     )
+                     
+```
+In the audio feature correlation map, energy and loudness seem to be positively correlated
+
+```{r}
+feature_names <- names(data)[9:20]
+
+
+data_corr = data %>%
+  dplyr::select(feature_names) %>%
+  scale() %>%
+  cor() %>%
+  corrplot::corrplot(method = 'color', 
+                     order = 'hclust', 
+                     type = 'upper', 
+                     diag = FALSE, 
+                     tl.col = 'black',
+                     addCoef.col = "grey30",
+                     number.cex = .7,
+                     col = colorRampPalette(colors = c('red','white','blue'))(200),
+                     main = 'Audio Feature Correlation',
+                     mar = c(2,2,2,2),
+                     family = 'Avenir',
+                     number.digits = 1.
+                     
+                     )
+```
+
+```{r}
+
+p1 <- data %>% ggplot(aes(x = playlist_genre, y = valence, color = playlist_genre)) +
+  geom_boxplot(alpha = 0.7, notch = TRUE) +
+  theme_bw() +
+  labs(title = 'How happy or sad the genres are?', x= 'Genres', y = 'Happiness' )
+
+#Energy
+
+p2 <- data %>% ggplot(aes(x = playlist_genre, y = energy, color = playlist_genre)) +
+  geom_boxplot(alpha = 0.1, notch = TRUE) +
+  theme_bw() +
+  labs(title = 'How energetic are the Genres?', x= 'Genres', y = 'Energy' )
+
+#Danceability
+p3 <- data %>% ggplot(aes(x = playlist_genre, y = danceability, color = playlist_genre)) +
+  geom_boxplot(alpha = 0.5, notch = TRUE) +
+  theme_bw() +
+  labs(title = 'Genres and their danceablity', x= 'Genres', y = 'Danceability' )
+
+#Tempo
+p4 <- data %>% ggplot(aes(x = playlist_genre, y = tempo, color = playlist_genre)) +
+  geom_boxplot(alpha = 0.5, notch = TRUE) +
+  theme_bw() +
+  labs(title = 'Genres and their Tempo', x= 'Genres', y = 'Tempo' )
+
+ggarrange(p1,p2,p3,p4 , nrow = 2, ncol = 2, common.legend = TRUE, legend="bottom")
+
+```
+
+How does boxplots and density plots together help us understand generes and their features?
+
+Valence - As observed in the density plot valence can provide us a good seperation between EDM and Latin tracks as their is a comsiderable difference between their medial values and range, while all other genres have somewhat similar valence.
+
+Energy - Latin and Pop tracks have similar range and median values so energy might not be a good seperator for them while the remaining 4 genres have a decent seperation on energy.
+
+Danceability - As density plots show Rock has the lowest danceability score while Latin tracks are more closely packed with the high danceability scores and Rap have a little more variability than latin tracks but in general have high danceability score.
+
+Tempo - It might do a good job of seperating EDM tracks from the rest of the genres as most of the EDM tracks are clustered around 125 while other genres have more or less a similar spread and variability.
+
+```{r}
+  minutesMostListened = data %>% 
+  group_by(track_artist) %>% 
+  summarize(minutesListened = sum(duration_ms)/60000) %>% 
+  filter(minutesListened >= 180) %>%
+  ggplot(aes(x = track_artist, y = minutesListened)) + 
+  geom_col(aes(fill = minutesListened)) +
+  scale_fill_gradient(low = "yellow", high = "red") + 
+  labs(x= "Artist", y= "Minutes of music playback") + 
+  ggtitle("What were the most listened artists on my Spotify?", "> 3 hours listened") +
+  theme(axis.text.x = element_text(angle = 90))
+minutesMostListened
+
+```
+
+This graph shows us the most listened artist in the spotify dataset. Since, we had more than a thousand artists, filtering the data by duration helped us segregate the artists whose songs were heard for more than hours. The histogram is used to compare the  popularity amongst artists. Matrin Garrix that was popular both in pop and edm genre and hence is played for the longest duration by its neighbors.
+
+Using such data, spotify can work on its marketing strategy to check on ways of improving recognition almongst the less prominent artists. This can be done by showing more advertisements or song suggestions of the lesser popular singers so that listerners listen to them. Such stategy will make listeners spend more time on the spotify platform and can potentially increase their revenue.
+
