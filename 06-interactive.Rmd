@@ -1,5 +1,7 @@
 # Interactive component
 
+[Link to interactive plot](https://vizhub.com/vedant74/39fb8290cb0a465384fe276dff078582?edit=files&file=index.html)
+
 
 The following interactive plot is a plot between different audio features, genres and artists. On selecting a specific artists, all the songs of that artists are plotted on the screen. Each song will have a different value of audio features. This can be helpful in comparing the feature values of different artists based on the songs they produce. On hovering the mouse over the lines, entire group of lines belonging to the same genre is highlighted by a unique color making it easy to distinguish different genres and efficient to read their values. 
 
