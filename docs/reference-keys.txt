@@ -13,3 +13,17 @@ interactive-component
 conclusion
 heatmap
 missing-patterns-function
+checking-coorelation-of-speechiness-and-instrumentalness-for-different-genres
+desnsity-distribution-of-various-genres-with-different-audio-features
+clustering-of-various-artists-on-the-basis-of-genres
+boxplot-distributin-of-various-genres-and-audio-features
+distribution-of-most-listened-artist-based-on-minutes-listened
+trend-of-average-danceability-over-the-years
+distribution-of-danceability-for-different-genres
+distribution-of-various-genres-produced-by-top-6-artists
+trend-of-average-duration-of-various-genres-over-the-years
+distribution-of-top-5-songs-based-on-various-variables
+distribution-of-top-3-artists-genres-and-duration-of-songs-played
+coorelation-plot-of-various-audio-features
+popularity-rank-distribution-of-top-25-artists-from-2015---2019
+comparitive-analysis-of-distribution-of-audio-features-between-top-10-and-last-10-tracks

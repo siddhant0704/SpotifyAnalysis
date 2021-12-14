@@ -21,7 +21,7 @@ library(readr)
 
 ```{r read_data}
 
-Spotify_final_data = read_csv("~/Desktop/EDAVProject/SpotifyAnalysis/dataset/Spotify_final_data.csv")
+Spotify_final_data = read_csv("/Users/vedant/SpotifyAnalysis/dataset/Spotify_final_data.csv")
 newdata = Spotify_final_data
 colnames(newdata) = c("X1","t_d", "t_n","t_r", "t_p", "tl_d", "tl_n", "t_", "p_n", "p_d", "p_g", "pt_s", "dn", "en", "ky", "ld", "md", "sp", "ac", "in1", "lv", "vl", "tm","d1")
 
@@ -30,7 +30,6 @@ colnames(newdata) = c("X1","t_d", "t_n","t_r", "t_p", "tl_d", "tl_n", "t_", "p_n
 
 ## Barplot
 
-### Firstly, we plotted a bar graph where x axis represents the column name and y axis represents the frequency of NA terms. It can be seen that majority of the columns don't have NA enries. And the highest number of NA entry in a column is close to 150.
 ```{r}
 
 colsna = colSums(is.na(newdata)) %>%
@@ -54,9 +53,12 @@ ggplot(dfna, aes(x=reorder(cols, -missing_na), y=missing_na)) +
 
 ```
 
+Firstly, we plotted a bar graph where x axis represents the column name and y axis represents the frequency of NA terms. It can be seen that majority of the columns don't have NA enries. And the highest number of NA entry in a column is close to 150.
+
+
+
 ## Cleveland Plot
 
-### Secondy, we try to infer the relation of frequency of NA terms with columns by potting cleveland plot. The plot has x axis representing the column name and y axis representing the freqency of NA terms. It can be seen that majority of the columns don't have NA enries. And the highest number of NA entry in a column is close to 150.
 
 ```{r}
 
@@ -64,9 +66,11 @@ ggplot(dfna, aes(x=reorder(cols, +missing_na), y=missing_na)) +
   geom_point(color = "blue") + coord_flip()
 
 ```
-## Heatmap
 
-### Finally, we created a heatmap of the subset of a data(because the size of the data is large to cover every scenario). It can be seen that column with name 'dn' has all rows having NA for the selected 25 rows. 
+Secondy, we try to infer the relation of frequency of NA terms with columns by potting cleveland plot. The plot has x axis representing the column name and y axis representing the freqency of NA terms. It can be seen that majority of the columns don't have NA enries. And the highest number of NA entry in a column is close to 150.
+
+
+## Heatmap
 
 ```{r, warning = FALSE}
 
@@ -84,9 +88,14 @@ ggplot(dt_n, aes(x = key, y = fct_rev(id), fill = missing)) +
   theme_bw()
 
 ```
+
+
+Finally, we created a heatmap of the subset of a data(because the size of the data is large to cover every scenario). It can be seen that column with name 'dn' has all rows having NA for the selected 25 rows. 
+
+
 ## Missing patterns function
 
-### Missing patterns function implementation on Spotify Dataset
+
 ```{r}
 missing_plots_fnc <- function(data, percent = TRUE) {
   
@@ -163,6 +172,8 @@ missing_plots_fnc <- function(data, percent = TRUE) {
 
 }
 ```
+
+Missing patterns function implementation on Spotify Dataset
 
 ```{r}
 

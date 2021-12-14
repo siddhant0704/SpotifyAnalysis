@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+        
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v6.min.js"></script>
+        
+<!-- Create a div where the graph will take place -->
+<div id="my_dataviz"></div>
+<!DOCTYPE html>
+<meta charset="utf-8">
+        
+<!-- Load d3.js -->
+
+<body>
+<!-- Create a div where the graph will take place -->
+<div id="my_dataviz"></div>
+
+<form  method="get">
+
+  <input type="button" id="name" value="data" onClick="pr()">
+
+  <input type="button" id="name1" value="chainsmokers" onClick="pr1()">
+
+  <input type="button" id="name2" value="david" onClick="pr2()">
+
+  <input type="button" id="name3" value="garrix" onClick="pr3()">
+ 
+  <input type="button" id="name4" value="omar" onClick="pr4()">
+
+  <input type="button" id="name5" value="queen" onClick="pr5()">
+
+  Line chart for: <span id="result"></span>
+</form>
+
+<div id = "body">
+
+<script>
+
+  function pr() {
+    var x = document.getElementById('name').value +".csv";
+    document.getElementById("result").innerHTML = x;
+    console.log("pr1 before")
+    d3.select("#body").select("svg").select("g").selectAll("g").remove()
+    console.log("pr1 after")
+    plot(x)
+    console.log(height,width)
+  }
+
+  function pr1() {
+    var x = document.getElementById('name1').value +".csv";
+    document.getElementById("result").innerHTML = x;
+    d3.select("#body").select("svg").select("g").selectAll("g").remove()
+    plot(x)
+  }
+
+  function pr2() {
+    var x = document.getElementById('name2').value +".csv";
+    document.getElementById("result").innerHTML = x;
+    d3.select("#body").select("svg").select("g").selectAll("g").remove()
+    plot(x)
+  }
+
+  function pr3() {
+    var x = document.getElementById('name3').value +".csv";
+    document.getElementById("result").innerHTML = x;
+    d3.select("#body").select("svg").select("g").selectAll("g").remove()
+    plot(x)
+  }
+
+  function pr4() {
+    var x = document.getElementById('name4').value +".csv";
+    document.getElementById("result").innerHTML = x;
+    d3.select("#body").select("svg").select("g").selectAll("g").remove()
+    plot(x)
+  }
+
+  function pr5() {
+    var x = document.getElementById('name5').value +".csv";
+    document.getElementById("result").innerHTML = x;
+    d3.select("#body").select("svg").select("g").selectAll("g").remove()
+    plot(x)
+  }
+
+  // set the dimensions and margins of the graph
+  const margin = {top: 30, right: 120, bottom: 10, left: 50},
+    width = 760 - margin.left - margin.right,
+    height = 700 - margin.top - margin.bottom;
+  
+  // append the svg object to the body of the page
+  var svg = d3.select("#body").append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+.append("g")
+  .attr("transform", 
+        "translate(" + margin.left + "," + margin.top + ")");
+          
+  var categories = ["pop", "rap",  "rock", "latin", "r&b",  "edm" ];
+
+  // Color scale: give me a specie name, I return a color
+  var ordinal = d3.scaleOrdinal()
+      .domain(categories)
+      .range(["#1B9E77", "#D95F02", "#7570B3", "#E7298A", "#66A61E", "#E6AB02"]); 
+      
+  function plot(x) {
+    
+  // Parse the Data
+  d3.csv(x).then( function(data) {
+
+    svg.append("text").attr("x", 600).attr("y", 470).text("Playlist Genre").style("font-size", "15px").attr("alignment-baseline","left")
+
+    svg.append("circle").attr("cx",620).attr("cy",500).attr("r", 6).style("fill", "#E6AB02")
+    svg.append("circle").attr("cx",620).attr("cy",530).attr("r", 6).style("fill", "#1B9E77")
+    svg.append("circle").attr("cx",620).attr("cy",560).attr("r", 6).style("fill", "#D95F02")
+    svg.append("circle").attr("cx",620).attr("cy",590).attr("r", 6).style("fill", "#7570B3")
+    svg.append("circle").attr("cx",620).attr("cy",620).attr("r", 6).style("fill", "#E7298A")
+    svg.append("circle").attr("cx",620).attr("cy",650).attr("r", 6).style("fill", "#66A61E")
+    
+    svg.append("text").attr("x", 630).attr("y", 500).text("edm").style("font-size", "15px").attr("alignment-baseline","middle")
+    svg.append("text").attr("x", 630).attr("y", 530).text("pop").style("font-size", "15px").attr("alignment-baseline","middle")
+    svg.append("text").attr("x", 630).attr("y", 560).text("rap").style("font-size", "15px").attr("alignment-baseline","middle")
+    svg.append("text").attr("x", 630).attr("y", 590).text("rock").style("font-size", "15px").attr("alignment-baseline","middle")
+    svg.append("text").attr("x", 630).attr("y", 620).text("latin").style("font-size", "15px").attr("alignment-baseline","middle")
+    svg.append("text").attr("x", 630).attr("y", 650).text("r&b").style("font-size", "15px").attr("alignment-baseline","middle")
+  
+    // Here I set the list of dimension manually to control the order of axis:
+    dimensions = ["energy", "liveness", "valence", "speechiness", "danceability"]
+  
+    // For each dimension, I build a linear scale. I store all in a y object
+    const y = {}
+    for (i in dimensions) {
+      name = dimensions[i]
+      y[name] = d3.scaleLinear()
+        .domain( [0,1] ) // --> Same axis range for each group
+        // --> different axis range for each group --> .domain( [d3.extent(data, function(d) { return +d[name]; })] )
+        .range([height, 0])
+    }
+  
+    // Build the X scale -> it find the best position for each Y axis
+    x = d3.scalePoint()
+      .range([0, width])
+      .domain(dimensions);
+  
+    // Highlight the specie that is hovered
+    const highlight = function(event, d){
+  
+      selected_specie = d.playlist_genre
+  
+      // first every group turns grey
+      d3.selectAll(".line")
+        .transition().duration(200)
+        .style("stroke", "lightgrey")
+        .style("opacity", "0.2")
+      // Second the hovered specie takes its color
+      d3.selectAll("." + selected_specie)
+        .transition().duration(200)
+        .style("stroke", ordinal(selected_specie))
+        .style("opacity", "1")
+    }
+  
+    // Unhighlight
+    const doNotHighlight = function(event, d){
+      d3.selectAll(".line")
+        .transition().duration(200).delay(1000)
+        .style("stroke", function(d){ return( ordinal(d.playlist_genre))} )
+        .style("opacity", "1")
+    }
+  
+    // The path function take a row of the csv as input, and return x and y coordinates of the line to draw for this raw.
+    function path(d) {
+        return d3.line()(dimensions.map(function(p) { return [x(p), y[p](d[p])]; }));
+    }
+
+    // Draw the lines
+    svg
+      .selectAll("myPath")
+      .data(data)
+      .join("path")
+        .attr("class", function (d) { return "line " + d.playlist_genre } ) // 2 class for each line: 'line' and the group name
+        .attr("d",  path)
+        .style("fill", "none" )
+        .style("stroke", function(d){ return( ordinal(d.playlist_genre))} )
+        .style("opacity", 0.5)
+        .on("mouseover", highlight)
+        .on("mouseleave", doNotHighlight )
+  
+    // Draw the axis:
+    svg.selectAll("myAxis")
+      // For each dimension of the dataset I add a 'g' element:
+      .data(dimensions).enter()
+      .append("g")
+      .attr("class", "axis")
+      // I translate this element to its right position on the x axis
+      .attr("transform", function(d) { return `translate(${x(d)})`})
+      // And I build the axis with the call function
+      .each(function(d) { d3.select(this).call(d3.axisLeft().ticks(5).scale(y[d])); })
+      // Add axis title
+      .append("text")
+        .style("text-anchor", "middle")
+        .attr("y", -9)
+        .text(function(d) { return d; })
+        .style("fill", "black")
+
+
+  });
+
+}
+  </script>
+
+</div>
+
+</body>
+</html>

@@ -15,6 +15,8 @@ library(grid)
 library(gridExtra)
 library(treemap)
 library(viridis)
+library(ggalluvial)
+
 
 ```
 
@@ -24,8 +26,6 @@ data = read.csv('/Users/vedant/SpotifyAnalysis/dataset/Spotify_final_data.csv')
 data = subset(data, select = -c(X))
 ```
 
-#How does the danceability feature relate to songs produced in different eras? Do ppl
-#dance to music produced in the current era or the preceding era?
 ```{r}
 colsna = colSums(is.na(data)) %>%
   sort(decreasing = TRUE)
@@ -48,6 +48,8 @@ dance = data %>% group_by(year) %>%
 
 ```
 
+## Trend of average danceability over the years
+
 ```{r}
 maxx = c(max(dance$avg_danceability))
 minn = c(min(dance$avg_danceability))
@@ -59,15 +61,18 @@ a = ggplot(dance, aes(x = year, y = avg_danceability)) +
 ggplotly(a)
 
 ```
+
 The Spotify dataset includes data from various years - 1955 to 2020. With the changing time, it is expected that the taste of music of the generation will change too. In the mission to determine the trend of music over the years and to understand if it's evolution has led in the production of 'more' danceable songs or less danceable songs, a following line graph has been plotted. The graph depicts the unusual rise and fall of danceable songs produced in each year. Geneally, the trend has been increasing and it is safe to conclude that with the passing year, the songs produced have a higher danceability factor. 
+
+**Inference -**
 
 To compare the danceability of the two eras - 19th and 20th, it can be said that the 20th century produced songs constantly in the danceability range between 0.5 and 0.6. Whereas, in the 19th century, the distribution has been relatively uneven. The maximum is seen to rise beyond 0.8 and the minimum is below 0.4. Maybe the music producers have learned from this trend and are producing musics within a sweet spot range of 0.5 - 0.6.
 
-Higest average danceability achieved - 0.816 in the year 1962
+**Higest average danceability** achieved - 0.816 in the year 1962
 
-Lowest average danceability achieved - 0.317 in the year 1960
+**Lowest average danceability** achieved - 0.317 in the year 1960
 
-
+## Distribution of danceability for different genres
 
 ```{r}
 genre_dance = data %>% group_by(playlist_genre) %>% select(danceability)
@@ -80,6 +85,12 @@ a = ggplot(genre_dance)+ geom_boxplot(aes(x = playlist_genre, y = danceability),
   theme_gray()
 ggplotly(a)
 ```
+
+
+The plot conveys the distribution of danceability for different genres. It can be seen that the average danceability is largest for rap as seens by the highest point on the line. Overall, there are several outliers in the lower range of the danceability. Apart from the rock genre, all other genres have relatively high danceability values. 
+
+
+## Distribution of various genres produced by Top 6 artists
 
 ```{r}
 
@@ -96,11 +107,14 @@ ggplot(popartist, aes(x =  track_artist, y = num, fill = playlist_genre)) +
   scale_fill_brewer(palette = "Blues") + theme_classic()
 
 ```
+
 To analyse the genres produced by the top 5 artists we have plotted a stacked bar chart to visualise the results. The plot can help us identify key factors like the genre preferences of an artist, the type of songs they have been producing, etc.
 
 **Important information to artists/producers - **
 
 It can also benefit the artist by understanding the competition in the music industry. They might want to study the genres produced by various artists and produce a one that is less common.
+
+**Inference -**
 
 From the plot, we can see that the high producers of the edm genre are David Guetta, Martin Garrix, and The Chainsmokers. One can say that Don Oman produces most songs of Latin genre as compared to other genres. He is also the leading producer of this type of genre when compared with other top artists. Similarly, Queen produces rock type of music the most as compared to any other genres. They are specialised in the rock genre. Drake on the other hand has produced music of all genres in a somewhat similar proportion (higher preferences to rap and r&b). There seems to be direct competition between  David Guetta and The Chainsmokers as they produce a competitive number of songs belonging to the genres edm and pop.
 
@@ -112,7 +126,9 @@ Pop - The Chainsmokers/David Guetta
 r&b - Drake
 Rap - Drake
 Rock - Queen
+
  
+## Trend of average duration of various genres over the years
 
 ```{r}
 
@@ -133,34 +149,35 @@ b = ggplot(a, aes(x = year, y = avg, colour = factor(playlist_genre))) +
 ggplotly(b)
 
 ```
+
 To understand the trend of various genres over time it is imperative we capture their average duration of being played in a given year. 
 
 **Important information to artists/producers - **
 
 The trend can convey important information to the artists and the producers of the song. It can tell if an artist should be working hard to produce a song of a particular genre or not. For example, as seen in the trend of the edm genre, it’s average duration of listening is tanking. It can be an indication that the audience prefers other genres over pop. An artist might therefore double question on the choice of a genre before finalizing one.
 
-**Inferences - **
+**Inference- **
 
 Several inferences can be drawn from the plot above - 
 
-Latin - The trend followed by Latin is of a hill like, clinching one time high value of average duration of over 350000 in 1980s. The following years have been similar to that of the pop genre (with more drops). On a broader view, the trend has been on a fall  with few sharp ups and downs but maintaining the range between 200000 ms and 250000 ms. Again, it is one of the safe genres to produce. Despite a falling trend in recent years, it has been consistently over the 200000 ms mark.
+**Latin** - The trend followed by Latin is of a hill like, clinching one time high value of average duration of over 350000 in 1980s. The following years have been similar to that of the pop genre (with more drops). On a broader view, the trend has been on a fall  with few sharp ups and downs but maintaining the range between 200000 ms and 250000 ms. Again, it is one of the safe genres to produce. Despite a falling trend in recent years, it has been consistently over the 200000 ms mark.
 
 
-r&b - The trend for r&b has been on a rise until 2010. Post 2010 captures a sudden drop in the average duration level and it continues to fall as the year progresses. However, between 1970 and 2010, the trend has been consistent and impressive, portraying an average duration of genre as high as 270000 ms. The consistent trend makes it the go to genre for producing songs for any artists/producers.
+**r&b** - The trend for r&b has been on a rise until 2010. Post 2010 captures a sudden drop in the average duration level and it continues to fall as the year progresses. However, between 1970 and 2010, the trend has been consistent and impressive, portraying an average duration of genre as high as 270000 ms. The consistent trend makes it the go to genre for producing songs for any artists/producers.
 
  
-Rock - The average duration for rock has been consistent throughout the years (after 1970). The genre has successfully maintained its average duration range between 220000 to 270000. The highest was achieved at over 300000 in the year 1970. Rock is a great genre choice for artists as it yields considerable interests in the listeners as is reflected in the plot. 
+**Rock** - The average duration for rock has been consistent throughout the years (after 1970). The genre has successfully maintained its average duration range between 220000 to 270000. The highest was achieved at over 300000 in the year 1970. Rock is a great genre choice for artists as it yields considerable interests in the listeners as is reflected in the plot. 
 
 
-Rap - Similar to the trend of pop, the rap genre was quite popular until 2010 and it’s average duration has been on a decline ever since. The rap genre managed to exceed the average duration of 400000 ms, second after the edm genre. The trend however, doesn’t bode well for the rap genre as it continues to sink to it’s all time low duration of under 200000 ms. To conclude, a versatile artist might be a little sceptical about producing the rap genre and would prefer other genres belonging to his repertoire.
+**Rap** - Similar to the trend of pop, the rap genre was quite popular until 2010 and it’s average duration has been on a decline ever since. The rap genre managed to exceed the average duration of 400000 ms, second after the edm genre. The trend however, doesn’t bode well for the rap genre as it continues to sink to it’s all time low duration of under 200000 ms. To conclude, a versatile artist might be a little sceptical about producing the rap genre and would prefer other genres belonging to his repertoire.
 
 
-edm - The trend of average duration played per year is not consistent with irregular rise and drop at different intervals. It can be interpreted that the demand of edm was the  most between the year 1995 and 2010.This can be deemed as a successful era for the edm artists as the average duration in ms has crossed 300000 multiple times and achieved a high of over 450000 ms. Although the graph indicates a dip in the later half of the 2010, the duration of edm still surpasses other genres. To conclude, from the trend it can be attested that the emd genre is the safest to produce and the artists can benefit from it.
+**edm** -  The trend of average duration played per year is not consistent with irregular rise and drop at different intervals. It can be interpreted that the demand of edm was the  most between the year 1995 and 2010.This can be deemed as a successful era for the edm artists as the average duration in ms has crossed 300000 multiple times and achieved a high of over 450000 ms. Although the graph indicates a dip in the later half of the 2010, the duration of edm still surpasses other genres. To conclude, from the trend it can be attested that the emd genre is the safest to produce and the artists can benefit from it.
 
 
-Pop - The trend of average duration played per year can be split in two trends - 19th century and 20th century. It can be seen that the overall demand for pop was greater in the 19th century with maximum average duration crossing 300000 ms and lowering at 150000 ms. The demand for the 20th century has been pretty consistent with the curve dipping after 2014 indicating lower demand. The maximum average duration during this century touches 250000 ms and tanks the least at 200000 ms. To conclude, the artists can safely produce more songs of the pop genre considering it’s trend post year 2000 is pretty consistent.
+**Pop** - The trend of average duration played per year can be split in two trends - 19th century and 20th century. It can be seen that the overall demand for pop was greater in the 19th century with maximum average duration crossing 300000 ms and lowering at 150000 ms. The demand for the 20th century has been pretty consistent with the curve dipping after 2014 indicating lower demand. The maximum average duration during this century touches 250000 ms and tanks the least at 200000 ms. To conclude, the artists can safely produce more songs of the pop genre considering it’s trend post year 2000 is pretty consistent.
 
-
+## Checking coorelation of speechiness and instrumentalness for different genres
 
 ```{r}
 words = data %>% select(playlist_genre, instrumentalness, speechiness)
@@ -172,12 +189,12 @@ Before interpreting the above plot, it is important to understand the meaning of
 
 **As described by tidytuesday - **
 
-*Instrumentalness conveys whether a track contains no vocals. “Ooh” and “aah” sounds are treated as instrumental in this context. Spoken words or Rap are clearly “vocal”. The closer the instrumentalness value is to 1.0, the greater likelihood the track contains no vocal content. Values above 0.5 are intended to represent instrumental tracks, but confidence is higher as the value approaches 1.0.
+*Instrumentalness conveys whether a track contains no vocals. “Ooh” and “aah” sounds are treated as instrumental in this context. Spoken words or Rap are clearly “vocal”. The closer the instrumentalness value is to 1.0, the greater likelihood the track contains no vocal content. Values above 0.5 are intended to represent instrumental tracks, but confidence is higher as the value approaches 1.0.*
 
-Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the recording (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value. Values above 0.66 describe tracks that are probably made entirely of spoken words. Values between 0.33 and 0.66 describe tracks that may contain both music and speech, either in sections or layered, including such cases as rap music. Values below 0.33 most likely represent music and other non-speech-like tracks.*
+*Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the recording (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value. Values above 0.66 describe tracks that are probably made entirely of spoken words. Values between 0.33 and 0.66 describe tracks that may contain both music and speech, either in sections or layered, including such cases as rap music. Values below 0.33 most likely represent music and other non-speech-like tracks.*
 
 A normal assumption around any music is that if the song contains high number of words, it’s instrumentalness is bound to be low. However, for various genres, it is seen that the relation between speehiness and instrumentalness is a line of slope nearly 0. For rap, a different trend can be seen. A plot with negative line slope indicates a negative coorelation, i.e, with increase in the value of speechiness, the instrumentalness decreases.  
-
+#Distribution of enery and liveness for different genres
 
 ```{r}
 
@@ -204,7 +221,7 @@ For rap, the range of liveness is between 0.04 and 0.2 and the range of energy i
 For rock, the range of liveness is between 0.02 and 0.25 and the range of energy is between 0.4 and 0.95
 
 
-
+## Distribution of Top 5 songs based on various variables
 ```{r}
 a = data %>% select(track_name,acousticness,speechiness,energy,danceability,loudness)%>% group_by(track_name) %>% 
   summarise(count = n(), acousticness = mean(acousticness),speechiness = mean(speechiness), energy = mean(energy),danceability = mean(danceability)) %>% arrange(desc(count)) 
@@ -217,6 +234,8 @@ ggplot(data=a, aes(x=Variables, y=Values))+geom_bar(aes(y=Values, fill=track_nam
 ```
 
 It's always exciting to listen to a trendy song. But how many of us have identified the parameters/qualities that these songs entail. More often than not, we fail to identify the various qualities these songs convey. It was therefore an exciting task to visualise the top 5 songs and compare them on various grounds. We plotted a grouped bar chart of the top 5 songs played with factors like - acousticness, danceability, energy,and speechiness. A general trend can be seen. All the top 5 songs have low values of acousticness and speechiness and high values of energy and danceability. This tells a lot about the kind of songs that are most heard. They are more energetic and are fun to dance on. It is something that the generation prefers. If the artists happen to come across these visualisations, they will know the secret to produce the song that makes it to the top.
+
+**Inference -**
 
 In this plot, Alive and Forever have the highest value of energy equal to 0.78. While more energy might hint for higher danceability, the visualisation portrays otherwise. Breathe and Forever have the highest value of danceability equal to 0.62. Another interesting fact to notice is that all the top 5 songs have low speechiness value. These songs have low words to music - something enjoyed by the 20th generation population.
 
@@ -234,41 +253,7 @@ danceability - Poisoan
 energy - Stay
 speechiness - Stay and Alive
 
-
-
-```{r}
-ms = data %>% select(playlist_genre, year, mode, duration_ms)
-ms = ms %>% group_by(playlist_genre) %>% mutate(avg_dur = mean(duration_ms))
-ms$year = ifelse(ms$year >= 2000, '20th','19th')
-ms$avg_dur = ifelse(ms$avg_dur >= 220000, '220k+','220k-')
-ms = ms %>% select(playlist_genre,year,avg_dur)
-vcd::mosaic(year ~ playlist_genre,
-            highlighting_fill = c("grey90", "cornflowerblue"), ms,
-            direction = c("v", "h"))
-
-
-#d = data %>% group_by(year) %>% select(year)
-#d$year = ifelse(d$year >= 2000, 19,20)
-#d = head(d,1000) %>% select(year)
-#d = d %>% group_by(year) %>% select(year)
-#d = head(d,20000) %>% select(year)
-#table(d)
-
-ms = data %>% select(playlist_genre, year, mode, duration_ms)
-ms = ms %>% group_by(playlist_genre) %>% mutate(avg_dur = mean(duration_ms))
-ms$year = ifelse(ms$year >= 2000, '20th','19th')
-ms19 = ms %>% filter(year == '19th' && avg_dur > 220000)
-ms20 = ms %>% filter(year == '20th' && avg_dur < 220000)
-ms19 = head(ms19, 1000)
-ms20 = head(ms20,600)
-msf = rbind(ms19,ms20)
-msf$avg_dur = ifelse(msf$avg_dur >= 220000, '220k+','220k-')
-vcd::mosaic(avg_dur ~ year + playlist_genre, direction = c("v", "h", "v"),
-            highlighting_fill = c("grey90", "cornflowerblue", 'yellow'), msf)
-```
-
-
-
+## Distribution of Top 3 artists, genres and duration of songs played
 
 ```{r}
 
@@ -286,9 +271,11 @@ popartist$duration_ms = ifelse(popartist$duration_ms >= 220000, '200k+','220k-')
 vcd::mosaic(playlist_genre ~ track_artist + duration_ms, direction = c("v", "v", "h"),
            highlighting_fill = rev(fills6), popartist) + theme_light()
 
-
 ```
+
 To understand the distribution of the music produced by the top 3 artists and their duration in ms, a mosaic plot is plotted. The mosaic plot is split on the three basics - duration of songs produced by the top3 artists, genres of the songs, and the top 3 artists.  We can break the information depicted by the mosaic plots as follows - 
+
+**Inference -**
 
 Firstly, we split the data based on the duration heard. We can see that for Martin Garrix, there are more songs produced by him that have been heard over 220k times when compared to songs heard below 220k.
 
@@ -404,6 +391,7 @@ a = data.frame(unique(popartist$track_artist))
 
 ```
 
+## Desnsity distribution of various genres with different audio features
 
 ```{r}
 
@@ -444,7 +432,10 @@ annotate_figure(p, top = textGrob("Ridge Density plot for each genre",gp=gpar(fo
 
 
 ```
+
 In the graph below we used ridge regression since, we the spotify playlist genre had multiple attributes against each of the music charecteristics - Dancebility, Energy, loudness and speechiness.
+
+**Inference -**
 
 For dancebility, it can be inferred that the graphs for all the genres are nearly uniformally distributed. Listenrs of rap and latin music usually enjoy dancing to the beats whereas edm and rock music despite generating most energy amongst the listenrs is not preferred for dancing. 
 
@@ -455,6 +446,8 @@ For loudness it can be seen that all the genres produce songs of a similar ampli
 From speechiness it can be inferred that most of the listeners of this spotify dataset enjoy listening to more instrumental and less of spoken words. Since rap music is one of the most popular type of vocal music. hence its distribution is more evenly spaced out incomparision to other genres.   
 
 Using this visualisation, artists can use the trusted speechiness. loudness values which will keep the fans hooked on their songs. Understanding a perfect blend of different different song parameters beyond this graph will ensure higher dancebility and energy amongst the listernes and eventually make them and their songs popular. 
+
+## Clustering of various artists on the basis of genres
 
 ```{r}
 # treemap depicts top 15 track artists with in each of the 6 playlist genre. The size of the boxes in treemap corresponds to the count tracks for the artists.
@@ -474,29 +467,7 @@ Lastly based on the overall size, it can be seen that edm and rap cover a larger
 
 This visualisation can help artists keep track of other popular artists in different genres. This can also help them understand which artists/bands to look upto i.e their advertisement/ marketing strategies et al. if they plan on releasing songs outside of their genre.
 
-```{r}
-
-  minutesMostListened = data %>% 
-  group_by(track_artist) %>% 
-  summarize(minutesListened = sum(duration_ms)/60000) %>% 
-  filter(minutesListened >= 180) %>%
-  ggplot(aes(x = track_artist, y = minutesListened)) + 
-  geom_col(aes(fill = minutesListened)) +
-  scale_fill_gradient(low = "yellow", high = "red") + 
-  labs(x= "Artist", y= "Minutes of music playback") + 
-  ggtitle("What were the most listened artists on my Spotify dataset?", "> 3 hours listened") +
-  theme(axis.text.x = element_text(angle = 90))
-minutesMostListened
-
-```
-Here we have plotted a heatmap showing hot and cold regions between various attributes of the dataset. For track popularity > = 0.5, heatmap helps us to visualise the relation between the various attributes. For eg, songs that inflict a sense of energy, have a higher dancebility factor. 
-
-Furthermore, it is observed that too short or too long duration songs do not energise the listeners. Listeners prefer songs that last for a minimum duration of 200 seconds and goes to a high of 300 seconds. 
-
-
-This graph shows us the most listened artist in the spotify dataset. Since, we had more than a thousand artists, filtering the data by duration helped us segregate the artists whose songs were heard for more than hours. The histogram is used to compare the  popularity amongst artists. Matrin Garrix that was popular both in pop and edm genre and hence is played for the longest duration by its neighbors.
-
-Using such data, spotify can work on its marketing strategy to check on ways of improving recognition almongst the less prominent artists. This can be done by showing more advertisements or song suggestions of the lesser popular singers so that listerners listen to them. Such stategy will make listeners spend more time on the spotify platform and can potentially increase their revenue. 
+## Coorelation plot of various audio features
 
 ```{r}
 feature_names <- names(data)[9:20]
@@ -516,38 +487,19 @@ data_corr = data %>%
                      col = colorRampPalette(colors = c('red','white','blue'))(200),
                      main = 'Audio Feature Correlation',
                      mar = c(2,2,2,2),
-                     family = 'Avenir',
                      number.digits = 1.
                      
                      )
                      
 ```
-In the audio feature correlation map, energy and loudness seem to be positively correlated
 
-```{r}
-feature_names <- names(data)[9:20]
+The correlation heat map between unique attributes of the audio feature provides comprehensive information on how these features are related to one another. For instance, energy and loudness seem to be positively related. This means if an artist is producing a song intending to excite or energize its listeners, then he can keep the loudness on the higher side. Usually, analyzing a combination of unique audio features works out well for the artist and the audience. For instance, a high valence and instrumentalness would work well for danceability. This will also help them segregate the song into the correct genre. 
 
 
-data_corr = data %>%
-  dplyr::select(feature_names) %>%
-  scale() %>%
-  cor() %>%
-  corrplot::corrplot(method = 'color', 
-                     order = 'hclust', 
-                     type = 'upper', 
-                     diag = FALSE, 
-                     tl.col = 'black',
-                     addCoef.col = "grey30",
-                     number.cex = .7,
-                     col = colorRampPalette(colors = c('red','white','blue'))(200),
-                     main = 'Audio Feature Correlation',
-                     mar = c(2,2,2,2),
-                     family = 'Avenir',
-                     number.digits = 1.
-                     
-                     )
-```
+Besides, such combinations will also help them to be mindful of eccentric combinations. For example, features that are negatively correlated will not go well together. For instance, a high acousticness can negatively impact the energy of the listener. Similarly, if the song is mostly instrumental, the artist should keep the loudness of the song low such that it has a soothing effect on the listener as they are negatively related. 
 
+
+## Boxplot distributin of various genres and audio features
 ```{r}
 
 p1 <- data %>% ggplot(aes(x = playlist_genre, y = valence, color = playlist_genre)) +
@@ -588,6 +540,8 @@ Danceability - As density plots show Rock has the lowest danceability score whil
 
 Tempo - It might do a good job of seperating EDM tracks from the rest of the genres as most of the EDM tracks are clustered around 125 while other genres have more or less a similar spread and variability.
 
+## Distribution of most listened artist based on minutes listened
+
 ```{r}
   minutesMostListened = data %>% 
   group_by(track_artist) %>% 
@@ -603,7 +557,249 @@ minutesMostListened
 
 ```
 
+
 This graph shows us the most listened artist in the spotify dataset. Since, we had more than a thousand artists, filtering the data by duration helped us segregate the artists whose songs were heard for more than hours. The histogram is used to compare the  popularity amongst artists. Matrin Garrix that was popular both in pop and edm genre and hence is played for the longest duration by its neighbors.
 
 Using such data, spotify can work on its marketing strategy to check on ways of improving recognition almongst the less prominent artists. This can be done by showing more advertisements or song suggestions of the lesser popular singers so that listerners listen to them. Such stategy will make listeners spend more time on the spotify platform and can potentially increase their revenue.
+
+## Comparitive analysis of distribution of audio features between top 10 and last 10 tracks
+
+
+```{r}
+
+songs = data %>%
+  group_by(track_name) %>%
+  mutate(n = n()) %>% filter(n > 5) %>% 
+  select(duration_ms, n,energy, liveness,valence, speechiness,danceability) %>% arrange(desc(n))
+
+songs = read_csv('songs.csv')
+
+songs_top10 = head(songs,10)
+songs_bot10 = tail(songs,10)
+
+songs_top10 = songs_top10%>%dplyr::select(-index,-n, -duration_ms)
+songs_bot10 = songs_bot10%>%dplyr::select(-index,-n, -duration_ms)
+
+songs_top10 = songs_top10 %>% pivot_longer(!track_name, names_to = "Variables", values_to = "Values")
+songs_bot10 = songs_bot10 %>% pivot_longer(!track_name, names_to = "Variables", values_to = "Values")
+
+songs_top10 = songs_top10 %>% mutate(track_name = factor(track_name))
+songs_bot10 = songs_bot10 %>% mutate(track_name = factor(track_name))
+
+
+songs_top10_dance = subset(songs_top10, songs_top10$Variables == "danceability")
+
+songs_top10_energy = subset(songs_top10, songs_top10$Variables == "energy")
+
+songs_top10_liveness = subset(songs_top10, songs_top10$Variables == "liveness")
+
+songs_top10_speechiness = subset(songs_top10, songs_top10$Variables == "speechiness")
+
+songs_top10_valence = subset(songs_top10, songs_top10$Variables == "valence")
+
+
+
+songs_bot10_dance = subset(songs_bot10, songs_bot10$Variables == "danceability")
+
+songs_bot10_liveness = subset(songs_bot10, songs_bot10$Variables == "liveness")
+
+songs_bot10_speechiness = subset(songs_bot10, songs_bot10$Variables == "speechiness")
+
+songs_bot10_valence = subset(songs_bot10, songs_bot10$Variables == "valence")
+
+songs_bot10_energy = subset(songs_bot10, songs_bot10$Variables == "energy")
+
+
+
+p1 <-ggplot(songs_top10_dance, aes(y = reorder(track_name, Values), x = Values)) +
+  geom_point() + theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.y = element_line(colour = "grey60", linetype = "dashed")
+  ) +
+  xlab("Values") +
+  ylab("Track name") +
+  ggtitle("Danceability")
+
+p2 <-ggplot(songs_top10_energy, aes(y = reorder(track_name, Values), x = Values)) +
+  geom_point() + theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.y = element_line(colour = "grey60", linetype = "dashed")
+  ) +
+  xlab("Values") +
+  ylab("Track name") +
+  ggtitle("Energy")
+
+p3 <-ggplot(songs_top10_liveness, aes(y = reorder(track_name, Values), x = Values)) +
+  geom_point() + theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.y = element_line(colour = "grey60", linetype = "dashed")
+  ) +
+  xlab("Values") +
+  ylab("Track name") +
+  ggtitle("Liveness")
+
+p4 <-ggplot(songs_top10_speechiness, aes(y = reorder(track_name, Values), x = Values)) +
+  geom_point() + theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.y = element_line(colour = "grey60", linetype = "dashed")
+  ) +
+  xlab("Values") +
+  ylab("Track name") +
+  ggtitle("Speechiness")
+
+p5 <-ggplot(songs_top10_valence, aes(y = reorder(track_name, Values), x = Values)) +
+  geom_point() + theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.y = element_line(colour = "grey60", linetype = "dashed")
+  ) +
+  xlab("Values") +
+  ylab("Track name") +
+  ggtitle("Valence")
+
+p6 <- ggarrange(p1,p2,p3,p4,p5, nrow = 2, ncol = 3)
+
+p6
+
+p7 <-ggplot(songs_bot10_dance, aes(y = reorder(track_name, Values), x = Values)) +
+  geom_point() + theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.y = element_line(colour = "grey60", linetype = "dashed")
+  ) +
+  xlab("Values") +
+  ylab("Track name") +
+  ggtitle("Danceability")
+
+p8 <-ggplot(songs_bot10_energy, aes(y = reorder(track_name, Values), x = Values)) +
+  geom_point() + theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.y = element_line(colour = "grey60", linetype = "dashed")
+  ) +
+  xlab("Values") +
+  ylab("Track name") +
+  ggtitle("Energy")
+
+p9 <-ggplot(songs_bot10_liveness, aes(y = reorder(track_name, Values), x = Values)) +
+  geom_point() + theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.y = element_line(colour = "grey60", linetype = "dashed")
+  ) +
+  xlab("Values") +
+  ylab("Track name") +
+  ggtitle("Liveness")
+
+p10 <-ggplot(songs_bot10_speechiness, aes(y = reorder(track_name, Values), x = Values)) +
+  geom_point() + theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.y = element_line(colour = "grey60", linetype = "dashed")
+  ) +
+  xlab("Values") +
+  ylab("Track name") +
+  ggtitle("Speechiness")
+
+p11 <-ggplot(songs_bot10_valence, aes(y = reorder(track_name, Values), x = Values)) +
+  geom_point() + theme_bw() +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.y = element_line(colour = "grey60", linetype = "dashed")
+  ) +
+  xlab("Values") +
+  ylab("Track name") +
+  ggtitle("Valence")
+
+p12 <- ggarrange(p7,p8,p9,p10,p11, nrow = 2, ncol = 3)
+
+p12
+
+```
+
+To compare the audio features of Top 10 song and bottom 10 songs, a cleavland plot is plotted. The plot can be useful to understand the features that contribute to the success of the Top 10 songs. It can also give the artists idea on the audio features to set in order to produce a hit song. 
+
+## Popularity rank distribution of Top 25 artists from 2015 - 2019
+
+```{r}
+
+
+data3 = data[c("track_artist","track_popularity","year")]
+
+data3 <- subset(data3, data3$track_popularity < 25)
+data3 <- subset(data3, data3$track_popularity != 0)
+data3 <- subset(data3, data3$year > 2014)
+data3 <- data3[order(data3$year),]
+
+data3 <- data3 %>%
+          group_by(track_artist,year) %>%
+            summarise(popularity = min(track_popularity))
+
+popartist = data %>%
+  group_by(track_artist) %>%
+  mutate(n = n()) %>%
+  mutate(Freq = n/sum(n)) %>% filter(n > 60) %>%
+  select(track_artist, playlist_genre)
+
+a = unique(popartist$track_artist)
+
+d <- subset(data3, data3$track_artist %in% a)
+
+b = c("Wisin & Yandel","Daddy Yankee", "David Guetta", "Don Omar", "Kygo", "Maroon 5", "Avicii")
+
+'%!in%' <- function(x,y)!('%in%'(x,y))
+d <- subset(d, d$track_artist %!in% b)
+
+d$popularity[d$track_artist=="Logic" & d$year == 2015]<- "3"
+d$popularity[d$track_artist=="Tiësto" & d$year == 2015]<- "10"
+d$popularity[d$track_artist=="The Weeknd" & d$year == 2015]<- "7"
+d$popularity[d$track_artist=="Calvin Harris" & d$year == 2015]<- "9"
+d$popularity[d$track_artist=="Dimitri Vegas & Like Mike" & d$year == 2015]<- "6"
+
+d$popularity[d$track_artist=="Martin Garrix" & d$year == 2016]<- "10"
+d$popularity[d$track_artist=="Major Lazer" & d$year == 2016]<- "7"
+d$popularity[d$track_artist=="DJ Snake" & d$year == 2016]<- "8"
+
+d$popularity[d$track_artist=="J Balvin" & d$year == 2017]<- "3"
+d$popularity[d$track_artist=="Logic" & d$year == 2017]<- "6"
+
+
+d$year <- as.factor(d$year)
+d$popularity <- as.factor(d$popularity)
+
+nb.cols <- 13
+mycolors <- colorRampPalette(brewer.pal(8, "Set1"))(nb.cols)
+
+ggplot(d,
+       aes(x = year, stratum = fct_infreq(popularity), alluvium = track_artist, fill = track_artist)) +
+  scale_fill_manual(values = mycolors) +
+  geom_flow(stat = "alluvium", lode.guidance = "frontback",
+            color = "darkgray") +
+  geom_stratum(alpha = .5) +
+  geom_text(stat = "stratum", aes(label = after_stat(stratum))) +
+  ggtitle("Alluvial Diagram Showing Status of Students According to Dates")
+
+
+```
+
+The plot depicts the distribution of change of ranks over the years of various artists. Branch color indicates the name of the track artist and the blocks depict their popularity rank over different years.
+
+**Important information to artists/producers - **
+
+The graph can aid artists to understand their rank over years which is an indication of their progress over the years. It also informs artists about the competition in the industry by looking at the artists who have been progressing towards higher ranks over the years. Such information can play a vital role in devising strategies or even find potential track partners (those who have been performing consistently well). 
+
 

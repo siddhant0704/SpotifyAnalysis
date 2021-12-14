@@ -1,2 +1,14 @@
 # Conclusion
 
+In conclusion, the project offers great insight to both - the artists and listeners. The artists can benefit from the visualisation and the insights to strategically plan ahead of time what variables they must keep in mind inorder to produce a song that is captivating enough and makes it to the top 10.
+
+
+1. We have seen from the grouped bar chart that the top 5 songs have high values of danceability and energy and lower values of acousticness and speechiness. So, for an artist to thrive, it is safe to say, they can work to produce songs that have high levels of energy and are also danceable.
+
+2. Furthermore, the artist can also envision success of their tracks based on the genre they choose to compose. On the analysis of the grouped line plot that highlights the trend of various genres over a range of time and portrays vital information about the average duration for which it was played, the artists can safely work on edm, r&b and rock genre. These genres have been consistently heard for over 250000 ms which is an important metric for success. 
+
+3. Music industry is all about competition. Artists always want to be ahead of their fellow competitors. It therefore becomes all the more important to understand the competition space and the genres in which the competitors thrive. From the stacked bar plot, we can infer that in the present time, Martin Garrix, Don Omar, Darke, Chainsmokers, and  David Guetta excel in their respective genres. On the other hand, Queens were at their prime time in the 19th century. They don’t produce songs anymore. This leaves a huge void in the space of the rock genre that the existing artists or newcomers can leverage.
+ 
+4. Oftentimes the listeners want to understand the artists that produce songs belonging to a particular genre. Treemap offers just that. The treemap groups various genres. These genres group the track artists that have produced songs of that genre. So for a listener who likes a particular genre but doesn’t have much idea about the various artists that produce songs of that genre, treemap can be helpful. 
+
+5. Finally, the box plot on genres vs variables like Happiness, Danceability, Energy etc,  can help listeners who love listening to songs based on their mood. The box plot portrays information about how different genres affect the levels of the variables. For example, a person in a merry mood would want to listen to songs of latin or rock genre as it is heard by most people and so on.

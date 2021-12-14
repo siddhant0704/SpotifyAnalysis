@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 8 Clustering of various artists on the basis of genres | Spotify Dataset Analysis</title>
+  <meta name="description" content="Chapter 8 Clustering of various artists on the basis of genres | Spotify Dataset Analysis" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 8 Clustering of various artists on the basis of genres | Spotify Dataset Analysis" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 8 Clustering of various artists on the basis of genres | Spotify Dataset Analysis" />
+  
+  
+  
+
+<meta name="author" content="Siddhant Kumar, Vedant Kumar" />
+
+
+<meta name="date" content="2021-12-13" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="desnsity-distribution-of-various-genres-with-different-audio-features.html"/>
+<link rel="next" href="boxplot-distributin-of-various-genres-and-audio-features.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Spotify Analysis</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources</a></li>
+<li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation</a></li>
+<li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="missing-values.html"><a href="missing-values.html#barplot"><i class="fa fa-check"></i><b>4.1</b> Barplot</a></li>
+<li class="chapter" data-level="4.2" data-path="missing-values.html"><a href="missing-values.html#cleveland-plot"><i class="fa fa-check"></i><b>4.2</b> Cleveland Plot</a></li>
+<li class="chapter" data-level="4.3" data-path="missing-values.html"><a href="missing-values.html#heatmap"><i class="fa fa-check"></i><b>4.3</b> Heatmap</a></li>
+<li class="chapter" data-level="4.4" data-path="missing-values.html"><a href="missing-values.html#missing-patterns-function"><i class="fa fa-check"></i><b>4.4</b> Missing patterns function</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a></li>
+<li class="chapter" data-level="6" data-path="checking-coorelation-of-speechiness-and-instrumentalness-for-different-genres.html"><a href="checking-coorelation-of-speechiness-and-instrumentalness-for-different-genres.html"><i class="fa fa-check"></i><b>6</b> Checking coorelation of speechiness and instrumentalness for different genres</a></li>
+<li class="chapter" data-level="7" data-path="desnsity-distribution-of-various-genres-with-different-audio-features.html"><a href="desnsity-distribution-of-various-genres-with-different-audio-features.html"><i class="fa fa-check"></i><b>7</b> Desnsity distribution of various genres with different audio features</a></li>
+<li class="chapter" data-level="8" data-path="clustering-of-various-artists-on-the-basis-of-genres.html"><a href="clustering-of-various-artists-on-the-basis-of-genres.html"><i class="fa fa-check"></i><b>8</b> Clustering of various artists on the basis of genres</a></li>
+<li class="chapter" data-level="9" data-path="boxplot-distributin-of-various-genres-and-audio-features.html"><a href="boxplot-distributin-of-various-genres-and-audio-features.html"><i class="fa fa-check"></i><b>9</b> Boxplot distributin of various genres and audio features</a></li>
+<li class="chapter" data-level="10" data-path="distribution-of-most-listened-artist-based-on-minutes-listened.html"><a href="distribution-of-most-listened-artist-based-on-minutes-listened.html"><i class="fa fa-check"></i><b>10</b> Distribution of most listened artist based on minutes listened</a></li>
+<li class="chapter" data-level="11" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>11</b> Interactive component</a></li>
+<li class="chapter" data-level="12" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>12</b> Conclusion</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Spotify Dataset Analysis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="clustering-of-various-artists-on-the-basis-of-genres" class="section level1" number="8">
+<h1><span class="header-section-number">Chapter 8</span> Clustering of various artists on the basis of genres</h1>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>Here to depict the top 15 artists in each of the 6 playlist genre, we used a Treemap. The different colors demarcate the different genres whereas the size of the boxes in the treemap corresponds to the number of tracks played by listeners of an artist. Listeners of edm music clearly show more affection towards the songs produced by Martin Garrix, Dimitri Vegas &amp; Like Mike and Hardwell. For all the other artists there is no dominance.</p>
+<p>Similar preferrance can be seen for Queen and Guns N Roses band in rock and Don Omar, Daddy Yankee and Wisin and Yandel in Latin. For songs that fall in the genre of Pop and r&amp;b, the listeners have a diverse choice and no band or group of musicians are dominating. It can also be observed that a lot of artists/groups that are popular in edm have shown remarkable popularity in pop. For example- David Guetta and Calvin Harris are amongst the few artists to feature in more than 1 genree of top 15 artists.</p>
+<p>Lastly based on the overall size, it can be seen that edm and rap cover a larger area of treemap thus indicating that these genres are most popular along the other 4 genres. While, pop and r&amp;b show lower popularity amongst the listeners of the spotify dataset.</p>
+<p>This visualisation can help artists keep track of other popular artists in different genres. This can also help them understand which artists/bands to look upto i.e their advertisement/ marketing strategies et al. if they plan on releasing songs outside of their genre.</p>
+<p>#Coorelation plot of various audio features</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-20-1.png" width="672" />
+The correlation heat map between unique attributes of the audio feature provides comprehensive information on how these features are related to one another. For instance, energy and loudness seem to be positively related. This means if an artist is producing a song intending to excite or energize its listeners, then he can keep the loudness on the higher side. Usually, analyzing a combination of unique audio features works out well for the artist and the audience. For instance, a high valence and instrumentalness would work well for danceability. This will also help them segregate the song into the correct genre.</p>
+<p>Besides, such combinations will also help them to be mindful of eccentric combinations. For example, features that are negatively correlated will not go well together. For instance, a high acousticness can negatively impact the energy of the listener. Similarly, if the song is mostly instrumental, the artist should keep the loudness of the song low such that it has a soothing effect on the listener as they are negatively related.</p>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="desnsity-distribution-of-various-genres-with-different-audio-features.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="boxplot-distributin-of-various-genres-and-audio-features.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/vedant74/SpotifyAnalysis/edit/main/05-results.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/vedant74/SpotifyAnalysis/blob/main/05-results.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
